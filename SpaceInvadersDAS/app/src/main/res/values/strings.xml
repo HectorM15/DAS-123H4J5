@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">SpaceInvadersDAS</string>
+    <string name="title_activity_space_invader">SpaceInvaderActivity</string>
+</resources>
