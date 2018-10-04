@@ -4,31 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1565c0"
     tools:context=".StartGameActivity">
+
+    <TextView
+            android:id="@+id/SpaceInvaderTV"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:drawSelectorOnTop="true"
+            android:ems="10"
+            android:text="SPACE INVADERS"
+            android:textColor="@android:color/background_light"
+            android:textStyle="italic"
+            android:typeface="serif"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/startGameButton"
-        android:layout_width="123dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="234dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="65dp"
-        android:text="Empezar"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="364dp"
+        android:backgroundTint="@color/colorAccent"
+        android:drawablePadding="8dp"
+        android:text="Jugar"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SpaceInvaderTV" />
-
-    <TextView
-        android:id="@+id/SpaceInvaderTV"
-        android:layout_width="165dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="110dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="123dp"
-        android:text="SpaceInvaders"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -468,36 +468,41 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
-
             // El jugador ha tocado la pantalla
             case MotionEvent.ACTION_DOWN:
+
                 paused = false;
-                if (motionEvent.getY() > screenY - screenY / 4) {
-                    if (motionEvent.getX() > screenX / 2) {
-                        playerShip.setMovementState(playerShip.RIGHT);
-                    } else {
-                        playerShip.setMovementState(playerShip.LEFT);
-                    }
+
+                if((screenX/3 < motionEvent.getX()) && (motionEvent.getX() <= (screenX/3)*2)){
+                    //parte central de la pantalla
+                    System.out.println("pimpam trucu trucu");
 
                 }
-
-                if (motionEvent.getY() < screenY - screenY / 4) {
-                    // Disparos lanzados
-                    if (bullet.shoot(playerShip.getX() +
-                            playerShip.getLength() / 2, screenY, bullet.UP)) {
-                        soundPool.play(shootID, 1, 1, 0, 0, 1);
+                //laterales de la pantalla
+                if(motionEvent.getX() <= (screenX/3)){
+                    //se mueve a la izq
+                    playerShip.setMovementState(playerShip.LEFT);
+                }else if (((screenX/3)*2) < motionEvent.getX()){
+                    //se mueve a la dcha
+                    playerShip.setMovementState(playerShip.RIGHT);
+                }else{
+                    if (motionEvent.getY() < screenY - screenY / 4) {
+                        // Disparos lanzados
+                        if (bullet.shoot(playerShip.getX() +
+                                playerShip.getLength() / 2, screenY, bullet.UP)) {
+                            soundPool.play(shootID, 1, 1, 0, 0, 1);
+                        }
                     }
                 }
+
+
                 break;
 
-            // El jugador ha retirado su dedo de la pantalla
+            // El jugador a retirado el dedo de la pantalla
             case MotionEvent.ACTION_UP:
-                if (motionEvent.getY() > screenY - screenY / 10) {
-                    playerShip.setMovementState(playerShip.STOPPED);
-                }
-
+                //se para
+                playerShip.setMovementState(playerShip.STOPPED);
                 break;
-
         }
 
         return true;
