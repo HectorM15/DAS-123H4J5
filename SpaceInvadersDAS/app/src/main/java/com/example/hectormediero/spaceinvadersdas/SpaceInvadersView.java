@@ -56,7 +56,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Las balas de los Invaders
     private Bullet[] invadersBullets = new Bullet[200];
     private int nextBullet;
-    private int maxInvaderBullets = 10;
+    private int maxInvaderBullets = 5;
 
     // Hasta 60 Invaders
     Invader[] invaders = new Invader[60];
@@ -79,7 +79,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     int score = 0;
 
     // Vidas
-    private int lives = 3;
+    private int lives = 1;
 
     // ¿Que tan amenazador debe de ser el sonido?
     private long menaceInterval = 1000;
@@ -425,8 +425,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 canvas.drawRect(bullet.getRect(), paint);
             }
 
-            // Dibuja las balas de los invaders
-
             // Actualiza todas las balas de los invaders si están activas
             for (int i = 0; i < invadersBullets.length; i++) {
                 if (invadersBullets[i].getStatus()) {
@@ -437,7 +435,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             // Cambia el color de la brocha
             paint.setColor(Color.argb(255, 249, 129, 0));
             paint.setTextSize(40);
-            canvas.drawText("Score: " + score + " Lives: " + lives, 10, 50, paint);
+            canvas.drawText("Score: " + score, 10, 50, paint);
 
             // Extrae todo a la pantalla
             ourHolder.unlockCanvasAndPost(canvas);
@@ -470,12 +468,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
+
             // El jugador ha tocado la pantalla
             case MotionEvent.ACTION_DOWN:
-
                 paused = false;
-
-                if (motionEvent.getY() > screenY - screenY / 8) {
+                if (motionEvent.getY() > screenY - screenY / 4) {
                     if (motionEvent.getX() > screenX / 2) {
                         playerShip.setMovementState(playerShip.RIGHT);
                     } else {
@@ -484,7 +481,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
                 }
 
-                if (motionEvent.getY() < screenY - screenY / 8) {
+                if (motionEvent.getY() < screenY - screenY / 4) {
                     // Disparos lanzados
                     if (bullet.shoot(playerShip.getX() +
                             playerShip.getLength() / 2, screenY, bullet.UP)) {
@@ -495,7 +492,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
             // El jugador ha retirado su dedo de la pantalla
             case MotionEvent.ACTION_UP:
-
                 if (motionEvent.getY() > screenY - screenY / 10) {
                     playerShip.setMovementState(playerShip.STOPPED);
                 }
