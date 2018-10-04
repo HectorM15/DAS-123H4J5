@@ -473,11 +473,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
                 paused = false;
 
-                if ((screenX / 3 < motionEvent.getX()) && (motionEvent.getX() <= (screenX / 3) * 2)) {
-                    //parte central de la pantalla
-                    System.out.println("pimpam trucu trucu");
-
-                }
                 //laterales de la pantalla
                 if (motionEvent.getX() <= (screenX / 3)) {
                     //se mueve a la izq

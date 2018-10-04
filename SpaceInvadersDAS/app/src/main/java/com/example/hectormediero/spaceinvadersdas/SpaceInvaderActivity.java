@@ -18,37 +18,52 @@ public class SpaceInvaderActivity extends Activity {
     // También tendrá la lógica del juego
     // y responderá a los toques a la pantalla
     SpaceInvadersView spaceInvadersView;
-
+    SpaceInvadersView13 spaceInvadersView13;
+    String mayor13;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+         mayor13=getIntent().getExtras().getString("mayor13");
         // Obtener un objeto de Display para accesar a los detalles de la pantalla
         Display display = getWindowManager().getDefaultDisplay();
         // Cargar la resolución a un objeto de Point
         Point size = new Point();
         display.getSize(size);
-
+        System.out.println(mayor13);
+        if(mayor13.equals("true")){
+             spaceInvadersView = new SpaceInvadersView(this, size.x, size.y);
+            setContentView(spaceInvadersView);
+        }else{
+             spaceInvadersView13 = new SpaceInvadersView13(this, size.x, size.y);
+            setContentView(spaceInvadersView13);
+        }
         // Inicializar gameView y establecerlo como la visualización
-        spaceInvadersView = new SpaceInvadersView(this, size.x, size.y);
-        setContentView(spaceInvadersView);
+
+
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         // Le dice al método de reanudar del gameView que se ejecute
-        spaceInvadersView.resume();
+        if(mayor13.equals("true")){
+            spaceInvadersView.resume();
+        }else{
+            spaceInvadersView13.resume();
+        }
+
     }
 
     // Este método se ejecuta cuando el jugador se sale del juego
     @Override
     protected void onPause() {
         super.onPause();
-
         // Le dice al método de pausa del gameView que se ejecute
-        spaceInvadersView.pause();
+        if(mayor13.equals("true")){
+            spaceInvadersView.pause();
+        }else{
+            spaceInvadersView13.pause();
+        }
     }
 }

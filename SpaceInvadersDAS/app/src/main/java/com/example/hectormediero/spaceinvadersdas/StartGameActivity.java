@@ -25,12 +25,14 @@ public class StartGameActivity extends AppCompatActivity {
         restEdad.setMessage("¿ Tiene usted más de 13 años ?");
         restEdad.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
+                spaceGame.putExtra("mayor13", "true");
                 startActivity(spaceGame);
             }
         });
         restEdad.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
-
+                spaceGame.putExtra("mayor13", "false");
+                startActivity(spaceGame);
             }
         });
 
