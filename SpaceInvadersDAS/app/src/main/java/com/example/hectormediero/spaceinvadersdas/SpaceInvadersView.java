@@ -351,7 +351,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void win() {
-        Toast.makeText(getContext(), "Has ganado! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
+        Toast.makeText(getContext().getApplicationContext(), "Has ganado! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
         paused = true;
         score = 0;
         lives = 1;
@@ -359,7 +359,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
-        Toast.makeText(getContext(), "Has perdido! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
+        Toast.makeText(getContext().getApplicationContext(), "Has perdido! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
         paused = true;
         score = 0;
         lives = 1;
