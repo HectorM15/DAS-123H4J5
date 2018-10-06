@@ -17,7 +17,7 @@ public class DefenceBrick {
 
         // A veces una bala atraviesa este relleno
         // Establece el relleno a 0 si te causa molestias
-        int brickPadding = 1;
+        int brickPadding = 0;
 
         // El número de guaridas
         int shelterPadding = screenX / 9;
