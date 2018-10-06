@@ -76,7 +76,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private int lives = 1;
 
     // ¿Que tan amenazador debe de ser el sonido?
-    private long menaceInterval = 1000;
+
     // Cual amenazante sonido debe de seguir en reproducirse
     private boolean uhOrOh;
     // Cuando fué la última vez que reproducimos un amenazante sonido
@@ -243,7 +243,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
             // Incrementa el nivel de amenaza
             // al hacer los sonidos más frecuentes
-            menaceInterval = menaceInterval - 80;
         }
 
         if (lost) {
@@ -274,7 +273,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
-
+        //Han chocado los invader con los ladrillos
         for (int i = 0; i < numInvaders; i++) {
             for (int j = 0; j < numBricks; j++) {
                 if (bricks[i].getVisibility()) {
@@ -351,8 +350,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void win() {
-
-        Toast.makeText(getContext().getApplicationContext(), "Has ganado!",Toast.LENGTH_LONG );
+        Toast.makeText(getContext(), "Has ganado!",Toast.LENGTH_LONG );
         paused = true;
         score = 0;
         lives = 1;
@@ -360,8 +358,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
-
-        Toast.makeText(getContext().getApplicationContext(), "Has perdido!",Toast.LENGTH_LONG );
+        Toast.makeText(getContext(), "Has perdido!",Toast.LENGTH_LONG );
         paused = true;
         score = 0;
         lives = 1;
