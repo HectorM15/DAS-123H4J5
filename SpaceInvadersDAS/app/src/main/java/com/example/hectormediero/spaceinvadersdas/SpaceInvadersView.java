@@ -474,15 +474,15 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 paused = false;
 
                 //laterales de la pantalla
-                if (motionEvent.getX() <= (screenX / 3)) {
-                    //se mueve a la izq
-                    playerShip.setMovementState(playerShip.LEFT);
-                } else if (((screenX / 3) * 2) < motionEvent.getX()) {
-                    //se mueve a la dcha
-                    playerShip.setMovementState(playerShip.RIGHT);
-                } else {
-
-                    // Disparos lanzados
+                if (motionEvent.getY() > screenY - screenY / 8) {
+                    if (motionEvent.getX() <= (screenX / 3)) {
+                        //se mueve a la izq
+                        playerShip.setMovementState(playerShip.LEFT);
+                    } else if (((screenX / 3) * 2) < motionEvent.getX()) {
+                        //se mueve a la dcha
+                        playerShip.setMovementState(playerShip.RIGHT);
+                    }
+                } else if (motionEvent.getY() < screenY - screenY / 8) {
                     if (bullet.shoot(playerShip.getX() +
                             playerShip.getLength() / 2, screenY, bullet.UP)) {
                         soundPool.play(shootID, 1, 1, 0, 0, 1);
