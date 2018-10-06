@@ -90,7 +90,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         // La siguiente línea del código le pide a
         // la clase de SurfaceView que prepare nuestro objeto.
         super(context);
-        Looper.prepare();
 
         // Hace una copia del "context" disponible globalmete para que la usemos en otro método
         this.context = context;
@@ -146,7 +145,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-
+        Looper.prepare();
         while (playing) {
 
             // Captura el tiempo actual en milisegundos en startFrameTime
@@ -378,7 +377,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             canvas = ourHolder.lockCanvas();
 
             // Dibuja el color del fondo
-            canvas.drawColor(Color.argb(255, 26, 128, 182));
+            canvas.drawColor(Color.argb(255, 48, 45, 44));
 
             // Escoje el color de la brocha para dibujar
             paint.setColor(Color.argb(255, 255, 255, 255));
