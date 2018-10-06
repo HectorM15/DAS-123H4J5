@@ -1,9 +1,12 @@
 package com.example.hectormediero.spaceinvadersdas;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -20,6 +23,8 @@ public class SpaceInvaderActivity extends Activity {
     SpaceInvadersView spaceInvadersView;
     SpaceInvadersView13 spaceInvadersView13;
     String mayor13;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +42,7 @@ public class SpaceInvaderActivity extends Activity {
              spaceInvadersView13 = new SpaceInvadersView13(this, size.x, size.y);
             setContentView(spaceInvadersView13);
         }
+
         // Inicializar gameView y establecerlo como la visualización
 
 
@@ -66,4 +72,5 @@ public class SpaceInvaderActivity extends Activity {
             spaceInvadersView13.pause();
         }
     }
+
 }

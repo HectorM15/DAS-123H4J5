@@ -1,18 +1,21 @@
 package com.example.hectormediero.spaceinvadersdas;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.media.AudioManager;
-import android.media.SoundPool;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -66,15 +69,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private DefenceBrick[] bricks = new DefenceBrick[400];
     private int numBricks;
 
-    // Para los efectos de sonido
-    private SoundPool soundPool;
-    private int playerExplodeID = -1;
-    private int invaderExplodeID = -1;
-    private int shootID = -1;
-    private int damageShelterID = -1;
-    private int uhID = -1;
-    private int ohID = -1;
-
     // La puntuación
     int score = 0;
 
@@ -89,13 +83,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private long lastMenaceTime = System.currentTimeMillis();
 
     // Cuando inicializamos (call new()) en gameView
-// Este método especial de constructor se ejecuta
+
+    // Este método especial de constructor se ejecuta
     public SpaceInvadersView(Context context, int x, int y) {
 
         // La siguiente línea del código le pide a
         // la clase de SurfaceView que prepare nuestro objeto.
-        // !Que amable¡.
         super(context);
+        Looper.prepare();
 
         // Hace una copia del "context" disponible globalmete para que la usemos en otro método
         this.context = context;
@@ -107,40 +102,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         screenX = x;
         screenY = y;
 
-        // Este SoundPool está obsoleto pero no te preocupes
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-
-        try {
-            // Crea objetos de las 2 clases requeridas
-            AssetManager assetManager = context.getAssets();
-            AssetFileDescriptor descriptor;
-
-            // Carga nuestros efectos de sonido en la memoria listos para usarse
-            descriptor = assetManager.openFd("shoot.ogg");
-            shootID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("invaderexplode.ogg");
-            invaderExplodeID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("damageshelter.ogg");
-            damageShelterID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("playerexplode.ogg");
-            playerExplodeID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("damageshelter.ogg");
-            damageShelterID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("uh.ogg");
-            uhID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("oh.ogg");
-            ohID = soundPool.load(descriptor, 0);
-
-        } catch (IOException e) {
-            // Imprime un mensaje de error a la consola
-            Log.e("error", "failed to load sound files");
-        }
 
         prepareLevel();
     }
@@ -287,7 +248,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         }
 
         if (lost) {
-            prepareLevel();
+            gameOver();
         }
 
         // Actualiza las balas del jugador
@@ -313,22 +274,30 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 invadersBullets[i].setInactive();
             }
         }
+
+
+        for (int i = 0; i < numInvaders; i++) {
+            for (int j = 0; j < numBricks; j++) {
+                if (bricks[i].getVisibility()) {
+                    if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
+                        gameOver();
+                    }
+                }
+
+            }
+        }
         // Ha tocado la bala del jugador a algún invader
         if (bullet.getStatus()) {
             for (int i = 0; i < numInvaders; i++) {
                 if (invaders[i].getVisibility()) {
                     if (RectF.intersects(bullet.getRect(), invaders[i].getRect())) {
                         invaders[i].setInvisible();
-                        soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
                         bullet.setInactive();
                         score = score + 10;
 
                         // Ha ganado el jugador
                         if (score == numInvaders * 10) {
-                            paused = true;
-                            score = 0;
-                            lives = 3;
-                            prepareLevel();
+                            win();
                         }
                     }
                 }
@@ -344,7 +313,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                             // A collision has occurred
                             invadersBullets[i].setInactive();
                             bricks[j].setInvisible();
-                            soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
+
                         }
                     }
                 }
@@ -361,7 +330,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         // A collision has occurred
                         bullet.setInactive();
                         bricks[i].setInvisible();
-                        soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                     }
                 }
             }
@@ -372,14 +340,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 if (RectF.intersects(playerShip.getRect(), invadersBullets[i].getRect())) {
                     invadersBullets[i].setInactive();
                     lives--;
-                    soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
-
                     // ¿Se acabó el juego?
                     if (lives == 0) {
-                        paused = true;
-                        lives = 3;
-                        score = 0;
-                        prepareLevel();
+                        gameOver();
 
                     }
                 }
@@ -387,6 +350,25 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         }
 
     }
+
+    private void win() {
+
+        Toast.makeText(getContext().getApplicationContext(), "Has ganado!",Toast.LENGTH_LONG );
+        paused = true;
+        score = 0;
+        lives = 1;
+        prepareLevel();
+    }
+
+    private void gameOver() {
+
+        Toast.makeText(getContext().getApplicationContext(), "Has perdido!",Toast.LENGTH_LONG );
+        paused = true;
+        score = 0;
+        lives = 1;
+        prepareLevel();
+    }
+
 
     private void draw() {
 
@@ -474,21 +456,21 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 paused = false;
 
 
-                    //laterales de la pantalla
-                    if (motionEvent.getY() > screenY - screenY / 8) {
-                        if (motionEvent.getX() <= (screenX / 3)) {
-                            //se mueve a la izq
-                            playerShip.setMovementState(playerShip.LEFT);
-                        } else if (((screenX / 3) * 2) < motionEvent.getX()) {
-                            //se mueve a la dcha
-                            playerShip.setMovementState(playerShip.RIGHT);
-                        }
-                    } else if (motionEvent.getY() < screenY - screenY / 8) {
-                        if (bullet.shoot(playerShip.getX() +
-                                playerShip.getLength() / 2, screenY, bullet.UP)) {
-                            soundPool.play(shootID, 1, 1, 0, 0, 1);
-                        }
+                //laterales de la pantalla
+                if (motionEvent.getY() > screenY - screenY / 8) {
+                    if (motionEvent.getX() <= (screenX / 3)) {
+                        //se mueve a la izq
+                        playerShip.setMovementState(playerShip.LEFT);
+                    } else if (((screenX / 3) * 2) < motionEvent.getX()) {
+                        //se mueve a la dcha
+                        playerShip.setMovementState(playerShip.RIGHT);
                     }
+                } else if (motionEvent.getY() < screenY - screenY / 8) {
+                    if (bullet.shoot(playerShip.getX() +
+                            playerShip.getLength() / 2, screenY, bullet.UP)) {
+
+                    }
+                }
 
 
                 break;
