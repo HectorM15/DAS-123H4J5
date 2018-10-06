@@ -88,13 +88,19 @@ public class PlayerShip {
 
     // Determina si la nave espacial del jugador necesita moverse y cambiar las coordenadas
 // que están en x si es necesario
-    public void update(long fps){
-        if(shipMoving == LEFT){
-            x = x - shipSpeed / fps;
+    public void update(long fps) {
+        if (shipMoving == LEFT) {
+            if ((x = x - shipSpeed / fps) <= 0)
+                x = 0;
+            else
+                x = x - shipSpeed / fps;
         }
 
-        if(shipMoving == RIGHT){
-            x = x + shipSpeed / fps;
+        if (shipMoving == RIGHT) {
+            if ((x = x + shipSpeed / fps) >= (length * 9))
+                x = length * 9;
+            else
+                x = x + shipSpeed / fps;
         }
 
         // Actualiza rect el cual es usado para detectar impactos
