@@ -6,7 +6,6 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
@@ -60,13 +59,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
     private int numBricks;
 
     // Para los efectos de sonido
-    private SoundPool soundPool;
-    private int playerExplodeID = -1;
-    private int invaderExplodeID = -1;
-    private int shootID = -1;
-    private int damageShelterID = -1;
-    private int uhID = -1;
-    private int ohID = -1;
+    
 
     // La puntuación
     int score = 0;
@@ -100,40 +93,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
         screenX = x;
         screenY = y;
 
-        // Este SoundPool está obsoleto pero no te preocupes
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
 
-        try {
-            // Crea objetos de las 2 clases requeridas
-            AssetManager assetManager = context.getAssets();
-            AssetFileDescriptor descriptor;
-
-            // Carga nuestros efectos de sonido en la memoria listos para usarse
-            descriptor = assetManager.openFd("shoot.ogg");
-            shootID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("invaderexplode.ogg");
-            invaderExplodeID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("damageshelter.ogg");
-            damageShelterID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("playerexplode.ogg");
-            playerExplodeID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("damageshelter.ogg");
-            damageShelterID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("uh.ogg");
-            uhID = soundPool.load(descriptor, 0);
-
-            descriptor = assetManager.openFd("oh.ogg");
-            ohID = soundPool.load(descriptor, 0);
-
-        } catch (IOException e) {
-            // Imprime un mensaje de error a la consola
-            Log.e("error", "failed to load sound files");
-        }
 
         prepareLevel();
     }

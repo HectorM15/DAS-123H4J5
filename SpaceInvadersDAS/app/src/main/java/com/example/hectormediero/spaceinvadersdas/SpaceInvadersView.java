@@ -1,23 +1,17 @@
 package com.example.hectormediero.spaceinvadersdas;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Looper;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
-import java.io.IOException;
 
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
@@ -351,7 +345,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void win() {
-        Toast.makeText(getContext().getApplicationContext(), "Has ganado! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
+        Toast.makeText(getContext().getApplicationContext(), "Has ganado! has conseguido "+score+" puntos",Toast.LENGTH_LONG ).show();
         paused = true;
         score = 0;
         lives = 1;
@@ -359,7 +353,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
-        Toast.makeText(getContext().getApplicationContext(), "Has perdido! has conseguido "+score+" puntos",Toast.LENGTH_LONG );
+        Toast.makeText(getContext().getApplicationContext(), "Has perdido! has conseguido "+score+" puntos",Toast.LENGTH_LONG ).show();
         paused = true;
         score = 0;
         lives = 1;
