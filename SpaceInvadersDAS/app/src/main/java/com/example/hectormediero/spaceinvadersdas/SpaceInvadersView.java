@@ -278,12 +278,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             for (int j = 0; j < numBricks; j++) {
                 if (bricks[i].getVisibility()) {
                     if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
-                        gameOver();
+                        bricks[j].setInvisible();
                     }
                 }
 
             }
         }
+        
         // Ha tocado la bala del jugador a algún invader
         if (bullet.getStatus()) {
             for (int i = 0; i < numInvaders; i++) {
@@ -291,10 +292,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     if (RectF.intersects(bullet.getRect(), invaders[i].getRect())) {
                         invaders[i].setInvisible();
                         bullet.setInactive();
-                        score = score + 10;
+                        score = score + 100;
 
                         // Ha ganado el jugador
-                        if (score == numInvaders * 10) {
+                        if (score == numInvaders * 100) {
                             win();
                         }
                     }
