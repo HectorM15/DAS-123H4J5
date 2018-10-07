@@ -1,11 +1,13 @@
 package com.example.hectormediero.spaceinvadersdas;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
@@ -18,7 +20,7 @@ import java.io.IOException;
 public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 
     Context context;
-
+    final Intent scoreGame;
     // Esta es nuestra secuencia
     private Thread gameThread = null;
 
@@ -85,7 +87,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 
         // Hace una copia del "context" disponible globalmete para que la usemos en otro método
         this.context = context;
-
+        scoreGame = new Intent(context.getApplicationContext(), ScoreActivity.class);
         // Inicializa los objetos de ourHolder y paint
         ourHolder = getHolder();
         paint = new Paint();
@@ -187,8 +189,16 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 
         }
 
-        // Actualiza a todas las balas de los invaders si están activas
+        for (int i = 0; i < numInvaders; i++) {
+            for (int j = 0; j < numBricks; j++) {
+                if (bricks[i].getVisibility()) {
+                    if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
+                        bricks[j].setInvisible();
+                    }
+                }
 
+            }
+        }
         // ¿Chocó algún invader en el extremo de la pantalla?
         if (bumped) {
 
@@ -197,23 +207,33 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
                 invaders[i].dropDownAndReverse();
                 // Han aterrizado los invaders
                 if (invaders[i].getY() > screenY - screenY / 10) {
-                    lost = true;
+                    gameOver();
                 }
             }
 
-            // Incrementa el nivel de amenaza
-            // al hacer los sonidos más frecuentes
-            menaceInterval = menaceInterval - 80;
+
         }
 
         if (lost) {
-            prepareLevel();
+            gameOver();
         }
 
 
 
     }
 
+    private void win() {
+        scoreGame.putExtra("result", "YOU WON");
+        scoreGame.putExtra("score", score);
+        context.startActivity(scoreGame);
+
+    }
+
+    private void gameOver() {
+        scoreGame.putExtra("result", "GAME OVER");
+        scoreGame.putExtra("score", score);
+        context.startActivity(scoreGame);
+    }
     private void draw() {
 
         // Asegurate de que la superficie del dibujo sea valida o tronamos
@@ -222,7 +242,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
             canvas = ourHolder.lockCanvas();
 
             // Dibuja el color del fondo
-            canvas.drawColor(Color.argb(255, 26, 128, 182));
+            canvas.drawColor(Color.argb(255, 48, 45, 44));
 
             // Escoje el color de la brocha para dibujar
             paint.setColor(Color.argb(255, 255, 255, 255));
