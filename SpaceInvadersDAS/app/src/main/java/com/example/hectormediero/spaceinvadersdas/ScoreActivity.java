@@ -33,11 +33,13 @@ public class ScoreActivity extends AppCompatActivity {
         rejugarDialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
                 startActivity(spaceGame);
+                finish();
             }
         });
         rejugarDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
                 startActivity(startGame);
+                finish();
             }
         });
 

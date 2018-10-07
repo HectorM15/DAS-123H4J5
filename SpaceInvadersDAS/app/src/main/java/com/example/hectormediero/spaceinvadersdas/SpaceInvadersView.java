@@ -362,7 +362,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);
-
     }
 
 

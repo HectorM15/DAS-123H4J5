@@ -18,7 +18,9 @@
         <activity
             android:name=".SpaceInvaderActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:noHistory = "true"
+            >
         </activity>
         <activity android:name=".ScoreActivity"/>
     </application>
