@@ -96,7 +96,6 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
         screenY = y;
 
 
-
         prepareLevel();
     }
 
@@ -190,13 +189,14 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
         }
 
         for (int i = 0; i < numInvaders; i++) {
-            for (int j = 0; j < numBricks; j++) {
-                if (bricks[i].getVisibility()) {
-                    if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
-                        bricks[j].setInvisible();
+            if (invaders[i].getVisibility()) {
+                for (int j = 0; j < numBricks; j++) {
+                    if (bricks[i].getVisibility()) {
+                        if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
+                            bricks[j].setInvisible();
+                        }
                     }
                 }
-
             }
         }
         // ¿Chocó algún invader en el extremo de la pantalla?
@@ -219,7 +219,6 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
         }
 
 
-
     }
 
     private void win() {
@@ -234,6 +233,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);
     }
+
     private void draw() {
 
         // Asegurate de que la superficie del dibujo sea valida o tronamos

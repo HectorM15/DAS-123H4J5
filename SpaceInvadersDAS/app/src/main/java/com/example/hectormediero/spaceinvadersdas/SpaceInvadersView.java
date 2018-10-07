@@ -22,7 +22,7 @@ import java.io.IOException;
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     Context context;
-    final Intent  scoreGame;
+    final Intent scoreGame;
 
     // Esta es nuestra secuencia
     private Thread gameThread = null;
@@ -276,13 +276,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         //Han chocado los invader con los ladrillos
         for (int i = 0; i < numInvaders; i++) {
-            for (int j = 0; j < numBricks; j++) {
-                if (bricks[i].getVisibility()) {
-                    if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
-                        bricks[j].setInvisible();
+            if (invaders[i].getVisibility()) {
+                for (int j = 0; j < numBricks; j++) {
+                    if (bricks[i].getVisibility()) {
+                        if (RectF.intersects(invaders[i].getRect(), bricks[j].getRect())) {
+                            bricks[j].setInvisible();
+                        }
                     }
                 }
-
             }
         }
 
