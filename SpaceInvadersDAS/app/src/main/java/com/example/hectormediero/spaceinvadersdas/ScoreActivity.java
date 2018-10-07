@@ -19,8 +19,9 @@ public class ScoreActivity extends AppCompatActivity {
         final Intent spaceGame = new Intent(getApplicationContext(), SpaceInvaderActivity.class);
         final Intent startGame = new Intent(getApplicationContext(), StartGameActivity.class);
 
-        String result=getIntent().getExtras().getString("result");
-        int score =getIntent().getExtras().getInt("score");
+        String result = getIntent().getExtras().getString("result");
+        final String mayor13 = getIntent().getExtras().getString("mayor13");
+        int score = getIntent().getExtras().getInt("score");
         TextView resultTV = findViewById(R.id.GameResult);
         TextView scoreTV = findViewById(R.id.GameScore);
         Button replayGame = findViewById(R.id.replayButton);
@@ -32,6 +33,7 @@ public class ScoreActivity extends AppCompatActivity {
         rejugarDialog.setMessage("¿Desea volver a jugar?");
         rejugarDialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
+                spaceGame.putExtra("mayor13", mayor13);
                 startActivity(spaceGame);
                 finish();
             }
@@ -49,8 +51,9 @@ public class ScoreActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
-    public void onBackPressed (){
+    public void onBackPressed() {
         System.out.println("YO YA NO QUIERO NA");
     }
 }

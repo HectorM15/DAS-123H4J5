@@ -222,6 +222,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
     }
 
     private void win() {
+        scoreGame.putExtra("mayor13", "false");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);
@@ -229,6 +230,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
+        scoreGame.putExtra("mayor13", "false");
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);

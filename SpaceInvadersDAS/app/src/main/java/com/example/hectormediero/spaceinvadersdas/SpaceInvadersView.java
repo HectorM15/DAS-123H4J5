@@ -353,6 +353,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void win() {
+
+        scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);
@@ -360,6 +362,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
+        scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
         context.startActivity(scoreGame);
