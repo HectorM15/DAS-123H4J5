@@ -20,6 +20,7 @@ public class StartGameActivity extends AppCompatActivity {
         final Intent  spaceGame = new Intent(getApplicationContext(), SpaceInvaderActivity.class);
 
         btnEmpezar = findViewById(R.id.startGameButton);
+
         final AlertDialog.Builder restEdad = new AlertDialog.Builder(this);
         restEdad.setTitle("Importante");
         restEdad.setMessage("¿ Tiene usted más de 13 años ?");

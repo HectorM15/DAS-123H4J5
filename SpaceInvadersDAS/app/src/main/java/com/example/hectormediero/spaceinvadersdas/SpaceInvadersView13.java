@@ -59,7 +59,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
     private int numBricks;
 
     // Para los efectos de sonido
-    
+
 
     // La puntuación
     int score = 0;

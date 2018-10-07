@@ -132,7 +132,6 @@ public class Invader {
 
         y = y + height;
 
-        shipSpeed = shipSpeed * 1.18f;
     }
 
     public boolean takeAim(float playerShipX, float playerShipLength){
