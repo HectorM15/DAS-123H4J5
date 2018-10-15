@@ -9,20 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartGameActivity">
+        <activity android:name=".Activities.StartGameActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".SpaceInvaderActivity"
+            android:name=".Activities.SpaceInvaderActivity"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:noHistory = "true"
             >
         </activity>
-        <activity android:name=".ScoreActivity"/>
+        <activity android:name=".Activities.ScoreActivity"/>
     </application>
 
 </manifest>

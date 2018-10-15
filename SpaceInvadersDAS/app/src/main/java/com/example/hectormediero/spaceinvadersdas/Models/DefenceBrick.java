@@ -1,4 +1,4 @@
-package com.example.hectormediero.spaceinvadersdas;
+package com.example.hectormediero.spaceinvadersdas.Models;
 
 import android.graphics.RectF;
 

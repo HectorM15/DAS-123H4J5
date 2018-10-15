@@ -1,4 +1,4 @@
-package com.example.hectormediero.spaceinvadersdas;
+package com.example.hectormediero.spaceinvadersdas.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.hectormediero.spaceinvadersdas.Activities.SpaceInvaderActivity;
+import com.example.hectormediero.spaceinvadersdas.R;
+
 public class StartGameActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

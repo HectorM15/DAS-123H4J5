@@ -1,15 +1,12 @@
-package com.example.hectormediero.spaceinvadersdas;
+package com.example.hectormediero.spaceinvadersdas.Activities;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
+
+import com.example.hectormediero.spaceinvadersdas.Views.SpaceInvadersView;
+import com.example.hectormediero.spaceinvadersdas.Views.SpaceInvadersView13;
 
 // SpaceInvadersActivity es el punto de entrada al juego.
 // Se va a encargar del ciclo de vida del juego al llamar
