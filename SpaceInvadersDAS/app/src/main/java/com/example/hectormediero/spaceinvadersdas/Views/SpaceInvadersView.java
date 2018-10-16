@@ -404,6 +404,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 canvas.drawRect(bullet.getRect(), paint);
             }
 
+
             // Actualiza todas las balas de los invaders si están activas
             for (int i = 0; i < invadersBullets.length; i++) {
                 if (invadersBullets[i].getStatus()) {

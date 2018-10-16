@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.hectormediero.spaceinvadersdas.BDD.BaseDeDatosPuntuaciones;
 import com.example.hectormediero.spaceinvadersdas.R;
 import com.example.hectormediero.spaceinvadersdas.Models.Score;
+import com.example.hectormediero.spaceinvadersdas.Views.DialogBuild;
 
 public class ScoreActivity extends AppCompatActivity {
     final private Integer maxNumScores=15;
@@ -25,7 +26,6 @@ public class ScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
         bdd= new BaseDeDatosPuntuaciones(this);
-
 
         final Intent spaceGame = new Intent(getApplicationContext(), SpaceInvaderActivity.class);
         final Intent startGame = new Intent(getApplicationContext(), StartGameActivity.class);
@@ -40,6 +40,7 @@ public class ScoreActivity extends AppCompatActivity {
 
         resultTV.setText(result);
         scoreTV.setText(Integer.toString(score));
+
 
         final AlertDialog.Builder rejugarDialog = new AlertDialog.Builder(this);
         rejugarDialog.setTitle("Aviso");
