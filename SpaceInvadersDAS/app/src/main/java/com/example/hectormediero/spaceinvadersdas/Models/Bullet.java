@@ -15,7 +15,8 @@ public class Bullet {
 
     // No vas a ningún lado
     int heading = -1;
-    float speed =  400;
+    float speed = 400;
+    private boolean rebote=false;
 
     private int width = 5;
     private int height;
@@ -30,23 +31,23 @@ public class Bullet {
         rect = new RectF();
     }
 
-    public RectF getRect(){
-        return  rect;
+    public RectF getRect() {
+        return rect;
     }
 
-    public boolean getStatus(){
+    public boolean getStatus() {
         return isActive;
     }
 
-    public void setInactive(){
+    public void setInactive() {
         isActive = false;
     }
 
-    public float getImpactPointY(){
-        if (heading == DOWN){
+    public float getImpactPointY() {
+        if (heading == DOWN) {
             return y + height;
-        }else{
-            return  y;
+        } else {
+            return y;
         }
 
     }
@@ -57,6 +58,7 @@ public class Bullet {
             y = startY;
             heading = direction;
             isActive = true;
+            rebote=false;
             return true;
         }
 
@@ -64,12 +66,21 @@ public class Bullet {
         return false;
     }
 
-    public void update(long fps){
+    public void changeDirection(int dir) {
+        this.heading = dir;
+        rebote=true;
+    }
+
+    public boolean getDir() {
+        return this.rebote;
+    }
+
+    public void update(long fps) {
 
         // Solo se mueve para arriba o abajo
-        if(heading == UP){
+        if (heading == UP) {
             y = y - speed / fps;
-        }else{
+        } else {
             y = y + speed / fps;
         }
 

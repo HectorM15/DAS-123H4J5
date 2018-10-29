@@ -59,7 +59,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Las balas de los Invaders
     private Bullet[] invadersBullets = new Bullet[200];
     private int nextBullet;
-    private int maxInvaderBullets = 5;
+    private int maxInvaderBullets = 4;
 
     // Hasta 60 Invaders
     Invader[] invaders = new Invader[60];
@@ -122,8 +122,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         // Construir un ejercito de invaders
         numInvaders = 0;
-        for (int column = 0; column < 6; column++) {
-            for (int row = 0; row < 5; row++) {
+        for (int column = 0; column < 5; column++) {
+            for (int row = 0; row < 4; row++) {
                 invaders[numInvaders] = new Invader(context, row, column, screenX, screenY);
                 numInvaders++;
             }
@@ -183,9 +183,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         // Mueve la nave espacial del jugador
         playerShip.update(fps);
 
+
         // Actualiza a los invaders si se ven
         for (int i = 0; i < numInvaders; i++) {
-
             if (invaders[i].getVisibility()) {
                 // Mueve el siguiente invader
                 invaders[i].update(fps);
@@ -193,24 +193,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 // ¿Quiere hacer un disparo?
                 if (invaders[i].takeAim(playerShip.getX(),
                         playerShip.getLength())) {
+                    //¿Puedo hacerlo?
+                    System.out.println(nextBullet);
+                    if (!invadersBullets[i].getStatus() && nextBullet<=maxInvaderBullets) {
 
-                    // Si sí, intentalo y genera una bala
-                    if (invadersBullets[nextBullet].shoot(invaders[i].getX()
-                                    + invaders[i].getLength() / 2,
-                            invaders[i].getY(), bullet.DOWN)) {
+                        // Si sí, intentalo y genera una bala
+                        if (invadersBullets[i].shoot(invaders[i].getX()
+                                        + invaders[i].getLength() / 2,
+                                invaders[i].getY(), bullet.DOWN)) {
 
-                        // Disparo realizado
-                        // Preparete para el siguiente disparo
-                        nextBullet++;
-
-                        // Inicia el ciclo repetitivo otra vez al
-                        // primero si ya hemos llegado al último.
-                        if (nextBullet == maxInvaderBullets) {
-                            // Esto detiene el disparar otra bala hasta
-                            // que una haya completado su trayecto.
-                            // Por que si bullet 0 todavia está activo,
-                            // shoot regresa a false.
-                            nextBullet = 0;
+                            // Disparo realizado
+                            // Preparete para el siguiente disparo
+                            nextBullet++;
                         }
                     }
                 }
@@ -227,7 +221,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         }
 
-        // Actualiza a todas las balas de los invaders si están activas
 
         // ¿Chocó algún invader en el extremo de la pantalla?
         if (bumped) {
@@ -263,13 +256,33 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         // Ha tocado la parte alta de la pantalla la bala del jugador
         if (bullet.getImpactPointY() < 0) {
-            bullet.setInactive();
+            bullet.changeDirection(1);
+        } else if (bullet.getImpactPointY() > screenY) {
+            bullet.changeDirection(0);
         }
 
         // Ha tocado la parte baja de la pantalla la bala del invader
         for (int i = 0; i < invadersBullets.length; i++) {
             if (invadersBullets[i].getImpactPointY() > screenY) {
-                invadersBullets[i].setInactive();
+                invadersBullets[i].changeDirection(0);
+            } else if (invadersBullets[i].getImpactPointY() < 0) {
+                invadersBullets[i].changeDirection(1);
+            } else if (invadersBullets[i].getStatus()) {
+                for (int k = 0; k < numInvaders; k++) {
+                    if (invaders[k].getVisibility()) {
+                        if (RectF.intersects(invadersBullets[i].getRect(), invaders[k].getRect()) && invadersBullets[i].getDir() == true) {//ÑAPA
+                            invaders[k].setInvisible();
+                            invadersBullets[i].setInactive();
+                            nextBullet--;
+                            score = score + 100;
+
+                            // Ha ganado el jugador
+                            if (score == numInvaders * 100) {
+                                win();
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -296,7 +309,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         score = score + 100;
 
                         // Ha ganado el jugador
-                        if (score == numInvaders*100) {
+                        if (score == numInvaders * 100) {
                             win();
                         }
                     }
@@ -312,6 +325,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         if (RectF.intersects(invadersBullets[i].getRect(), bricks[j].getRect())) {
                             // A collision has occurred
                             invadersBullets[i].setInactive();
+                            nextBullet--;
                             bricks[j].setInvisible();
 
                         }
@@ -334,11 +348,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
             }
         }
+
         // Ha impactado una bala de un invader a la nave espacial del jugador
         for (int i = 0; i < invadersBullets.length; i++) {
             if (invadersBullets[i].getStatus()) {
                 if (RectF.intersects(playerShip.getRect(), invadersBullets[i].getRect())) {
                     invadersBullets[i].setInactive();
+                    nextBullet--;
                     lives--;
                     // ¿Se acabó el juego?
                     if (lives == 0) {

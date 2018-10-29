@@ -32,6 +32,9 @@ public class PlayerShip {
     public final int LEFT = 1;
     public final int RIGHT = 2;
 
+    public final int UP = 3;
+    public final int DOWN = 4;
+
     // Se esta moviendo la nave espacial y en que dirección
     private int shipMoving = STOPPED;
 
@@ -96,13 +99,21 @@ public class PlayerShip {
                 x = 0;
             else
                 x = x - shipSpeed / fps;
-        }
-
-        if (shipMoving == RIGHT) {
+        } else if (shipMoving == RIGHT) {
             if ((x = x + shipSpeed / fps) >= (length * 9))
                 x = length * 9;
             else
                 x = x + shipSpeed / fps;
+        } else if (shipMoving == UP) {
+            if ((y = y - shipSpeed / fps) <= 0)
+                y = length * 9;
+            else
+                y = y + shipSpeed / fps;
+        } else if (shipMoving == DOWN) {
+            if ((y = y + shipSpeed / fps) >= (length * 9))
+                y = length * 9;
+            else
+                y = y + shipSpeed / fps;
         }
 
         // Actualiza rect el cual es usado para detectar impactos

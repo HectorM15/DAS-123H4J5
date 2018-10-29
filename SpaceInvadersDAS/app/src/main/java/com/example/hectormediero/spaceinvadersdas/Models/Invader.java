@@ -143,17 +143,12 @@ public class Invader {
         // Si está cerca del jugador
         if((playerShipX + playerShipLength > x &&
                 playerShipX + playerShipLength < x + length) || (playerShipX > x && playerShipX < x + length)) {
-
-            // Una probabilidad de 1 en 500 chance para disparar
-            randomNumber = generator.nextInt(150);
-            if(randomNumber == 0) {
                 return true;
-            }
 
         }
 
         // Si está disparando aleatoriamente (sin estar cerca del jugador) una probabilidad de 1 en 5000
-        randomNumber = generator.nextInt(2000);
+        randomNumber = generator.nextInt(10);
         if(randomNumber == 0){
             return true;
         }
