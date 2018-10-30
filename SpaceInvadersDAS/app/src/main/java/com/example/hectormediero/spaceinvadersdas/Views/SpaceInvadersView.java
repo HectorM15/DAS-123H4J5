@@ -50,6 +50,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private int screenX;
     private int screenY;
 
+    private int contadorColor;
     // La nave del jugador
     private PlayerShip playerShip;
 
@@ -176,7 +177,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         // ¿Chocó el invader contra el lado de la pantalla?
         boolean bumped = false;
-
+        contadorColor = 0;
         // ¿Ha perdido el jugador?
         boolean lost = false;
 
@@ -195,7 +196,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         playerShip.getLength())) {
                     //¿Puedo hacerlo?
                     System.out.println(nextBullet);
-                    if (!invadersBullets[i].getStatus() && nextBullet<=maxInvaderBullets) {
+                    if (!invadersBullets[i].getStatus() && nextBullet <= maxInvaderBullets) {
 
                         // Si sí, intentalo y genera una bala
                         if (invadersBullets[i].shoot(invaders[i].getX()
@@ -327,14 +328,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                             invadersBullets[i].setInactive();
                             nextBullet--;
                             bricks[j].setInvisible();
-
+                            contadorColor++;
                         }
                     }
                 }
             }
 
         }
-
+        if (contadorColor > 1) {
+            cambioColorAleatorio();
+        }else{
+            cambioColorUnico();
+        }
 
         // Ha impactado una bala del jugador a un ladrillo de la guarida
         if (bullet.getStatus()) {
@@ -365,6 +370,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
+    }
+
+    private void cambioColorUnico() {
+        for (int i = 0; i < numInvaders; i++) {
+          //  invaders[i].cambiarColor();
+        }
+    }
+
+    private void cambioColorAleatorio() {
+        for (int i = 0; i < numInvaders; i++) {
+
+        }
     }
 
     private void win() {

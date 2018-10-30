@@ -3,6 +3,11 @@ package com.example.hectormediero.spaceinvadersdas.Models;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.example.hectormediero.spaceinvadersdas.R;
@@ -39,6 +44,7 @@ public class Invader {
     private int shipMoving = RIGHT;
 
     boolean isVisible;
+    Paint paint = new Paint();
 
 
     public Invader(Context context, int row, int column, int screenX, int screenY) {
@@ -54,11 +60,12 @@ public class Invader {
         int padding = screenX / 25;
 
         x = column * (length + padding);
-        y = row * (length + padding/4);
+        y = row * (length + padding / 4);
 
         // Inicializa el bitmap
         bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader1);
         bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.invader2);
+
 
         // Ajusta el primer bitmap a un tamaño apropiado para la resolución de la pantalla
         bitmap1 = Bitmap.createScaledBitmap(bitmap1,
@@ -76,44 +83,44 @@ public class Invader {
         shipSpeed = 40;
     }
 
-    public void setInvisible(){
+    public void setInvisible() {
         isVisible = false;
     }
 
-    public boolean getVisibility(){
+    public boolean getVisibility() {
         return isVisible;
     }
 
-    public RectF getRect(){
+    public RectF getRect() {
         return rect;
     }
 
-    public Bitmap getBitmap(){
+    public Bitmap getBitmap() {
         return bitmap1;
     }
 
-    public Bitmap getBitmap2(){
+    public Bitmap getBitmap2() {
         return bitmap2;
     }
 
-    public float getX(){
+    public float getX() {
         return x;
     }
 
-    public float getY(){
+    public float getY() {
         return y;
     }
 
-    public float getLength(){
+    public float getLength() {
         return length;
     }
 
-    public void update(long fps){
-        if(shipMoving == LEFT){
+    public void update(long fps) {
+        if (shipMoving == LEFT) {
             x = x - shipSpeed / fps;
         }
 
-        if(shipMoving == RIGHT){
+        if (shipMoving == RIGHT) {
             x = x + shipSpeed / fps;
         }
 
@@ -125,10 +132,10 @@ public class Invader {
 
     }
 
-    public void dropDownAndReverse(){
-        if(shipMoving == LEFT){
+    public void dropDownAndReverse() {
+        if (shipMoving == LEFT) {
             shipMoving = RIGHT;
-        }else{
+        } else {
             shipMoving = LEFT;
         }
 
@@ -136,23 +143,43 @@ public class Invader {
 
     }
 
-    public boolean takeAim(float playerShipX, float playerShipLength){
+    public boolean takeAim(float playerShipX, float playerShipLength) {
 
         int randomNumber = -1;
 
         // Si está cerca del jugador
-        if((playerShipX + playerShipLength > x &&
+        if ((playerShipX + playerShipLength > x &&
                 playerShipX + playerShipLength < x + length) || (playerShipX > x && playerShipX < x + length)) {
-                return true;
+            return true;
 
         }
 
         // Si está disparando aleatoriamente (sin estar cerca del jugador) una probabilidad de 1 en 5000
         randomNumber = generator.nextInt(10);
-        if(randomNumber == 0){
+        if (randomNumber == 0) {
             return true;
         }
 
         return false;
     }
+
+    public void cambiarColor() {
+        float[] matrix = {
+                1, 1, 1, 1, 1, //red
+                0, 0, 0, 0, 0, //green
+                0, 0, 0, 0, 0, //blue
+                1, 1, 1, 1, 1 //alpha
+        };
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setSaturation(0f); //Remove Colour
+        colorMatrix.set(matrix); //Apply the Red
+
+        ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas canvas = new Canvas(bitmap1);
+        canvas.drawBitmap(bitmap1, 0, 0, paint);
+
+    }
+
 }
