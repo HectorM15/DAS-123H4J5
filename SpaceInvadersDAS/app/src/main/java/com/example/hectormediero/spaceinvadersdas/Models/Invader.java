@@ -3,12 +3,6 @@ package com.example.hectormediero.spaceinvadersdas.Models;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -165,19 +159,24 @@ public class Invader {
         return false;
     }
 
-    public void cambiarColor(Boolean cambiado) {
+    public void cambiarColor(Boolean cambiado,int color) {
+        if (color == 2)
+            color = 3;
         if (cambiado) {
-            bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+            elegirColor(color);
         } else {
-            bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.invader2);
+            elegirColor(2);
         }
-        bitmap2 = Bitmap.createScaledBitmap(bitmap2,
-                (int) (length),
-                (int) (height),
-                false);
+        reescalar();
     }
+
     public void cambiarColor(Integer cambiado) {
-        switch (cambiado) {
+        elegirColor(cambiado);
+        reescalar();
+    }
+
+    private void elegirColor(Integer cambio) {
+        switch (cambio) {
             case 1:
                 bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
                 break;
@@ -185,24 +184,25 @@ public class Invader {
                 bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.invader2);
                 break;
             case 3:
-                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.rojo);
                 break;
             case 4:
-                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.rosa);
                 break;
             case 5:
-                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.amaranja);
                 break;
             case 6:
-                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.celeste);
                 break;
         }
 
+    }
 
+    private void reescalar(){
         bitmap2 = Bitmap.createScaledBitmap(bitmap2,
                 (int) (length),
                 (int) (height),
                 false);
     }
-
 }

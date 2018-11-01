@@ -375,8 +375,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void cambioColorUnico() {
+        int color=(int) (Math.random() * 5);
         for (int i = 0; i < numInvaders; i++) {
-            invaders[i].cambiarColor(hanCambiado);
+            invaders[i].cambiarColor(hanCambiado,color);
         }
         if (hanCambiado)
             hanCambiado = false;
