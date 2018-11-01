@@ -5,8 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
@@ -45,13 +47,13 @@ public class Invader {
 
     boolean isVisible;
     Paint paint = new Paint();
-
+    Context contextPri;
 
     public Invader(Context context, int row, int column, int screenX, int screenY) {
 
         // Inicializa un RectF vacío
         rect = new RectF();
-
+        contextPri = context;
         length = screenX / 20;
         height = screenY / 20;
 
@@ -163,23 +165,44 @@ public class Invader {
         return false;
     }
 
-    public void cambiarColor() {
-        float[] matrix = {
-                1, 1, 1, 1, 1, //red
-                0, 0, 0, 0, 0, //green
-                0, 0, 0, 0, 0, //blue
-                1, 1, 1, 1, 1 //alpha
-        };
-        ColorMatrix colorMatrix = new ColorMatrix();
-        colorMatrix.setSaturation(0f); //Remove Colour
-        colorMatrix.set(matrix); //Apply the Red
+    public void cambiarColor(Boolean cambiado) {
+        if (cambiado) {
+            bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+        } else {
+            bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.invader2);
+        }
+        bitmap2 = Bitmap.createScaledBitmap(bitmap2,
+                (int) (length),
+                (int) (height),
+                false);
+    }
+    public void cambiarColor(Integer cambiado) {
+        switch (cambiado) {
+            case 1:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                break;
+            case 2:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.invader2);
+                break;
+            case 3:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                break;
+            case 4:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                break;
+            case 5:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                break;
+            case 6:
+                bitmap2 = BitmapFactory.decodeResource(contextPri.getResources(), R.drawable.verde);
+                break;
+        }
 
-        ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
-        Paint paint = new Paint();
-        paint.setColorFilter(colorFilter);
-        Canvas canvas = new Canvas(bitmap1);
-        canvas.drawBitmap(bitmap1, 0, 0, paint);
 
+        bitmap2 = Bitmap.createScaledBitmap(bitmap2,
+                (int) (length),
+                (int) (height),
+                false);
     }
 
 }

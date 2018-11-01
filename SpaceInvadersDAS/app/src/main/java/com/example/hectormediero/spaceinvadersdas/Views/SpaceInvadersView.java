@@ -26,6 +26,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Esta es nuestra secuencia
     private Thread gameThread = null;
 
+    Boolean hanCambiado = false;
     // Nuestro SurfaceHolder para bloquear la superficie antes de que dibujemos nuestros gráficos
     private SurfaceHolder ourHolder;
 
@@ -195,7 +196,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 if (invaders[i].takeAim(playerShip.getX(),
                         playerShip.getLength())) {
                     //¿Puedo hacerlo?
-                    System.out.println(nextBullet);
                     if (!invadersBullets[i].getStatus() && nextBullet <= maxInvaderBullets) {
 
                         // Si sí, intentalo y genera una bala
@@ -335,12 +335,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
 
         }
+
         if (contadorColor > 1) {
+            System.out.println("AQUI HAY MAS DE UNO" + contadorColor);
             cambioColorAleatorio();
-        }else{
+        } else if (contadorColor == 1) {
+            System.out.println("UNO" + contadorColor);
             cambioColorUnico();
         }
-
         // Ha impactado una bala del jugador a un ladrillo de la guarida
         if (bullet.getStatus()) {
             for (int i = 0; i < numBricks; i++) {
@@ -374,14 +376,22 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     private void cambioColorUnico() {
         for (int i = 0; i < numInvaders; i++) {
-          //  invaders[i].cambiarColor();
+            invaders[i].cambiarColor(hanCambiado);
         }
+        if (hanCambiado)
+            hanCambiado = false;
+        else
+            hanCambiado = true;
     }
 
     private void cambioColorAleatorio() {
         for (int i = 0; i < numInvaders; i++) {
-
+            invaders[i].cambiarColor((int) (Math.random() * 5));
         }
+        if (hanCambiado)
+            hanCambiado = false;
+        else
+            hanCambiado = true;
     }
 
     private void win() {
