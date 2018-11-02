@@ -18,6 +18,7 @@ public class PlayerShip {
     private float length;
     private float height;
 
+    private int screenX, screenY;
     // X es la parte extrema a la izquierda del rectángulo el cual forma nuestra nave espacial
     private float x;
 
@@ -44,7 +45,8 @@ public class PlayerShip {
 
         // Inicializa un RectF vacío
         rect = new RectF();
-
+        this.screenX=screenX;
+        this.screenY=screenY;
         length = screenX / 15;
         height = screenY / 15;
 
@@ -115,7 +117,7 @@ public class PlayerShip {
                 y = y - shipSpeed / fps;
         } else if (shipMoving == DOWN) {
             if ((y = y + shipSpeed / fps) >= (height * 14))
-                y =0;
+                y =screenY-(height*14);
             else
                 y = y + shipSpeed / fps;
         }
