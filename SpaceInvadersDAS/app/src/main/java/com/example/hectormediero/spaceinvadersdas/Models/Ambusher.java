@@ -82,6 +82,10 @@ public class Ambusher {
         return isVisible;
     }
 
+    public RectF getRect() {
+        return rect;
+    }
+
     public Bitmap getBitmap(){
         return bitmap1;
     }

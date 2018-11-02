@@ -81,6 +81,10 @@ public class PlayerShip {
         return x;
     }
 
+    public float getY() {
+        return y;
+    }
+
     public float getLength() {
         return length;
     }
@@ -105,10 +109,10 @@ public class PlayerShip {
             else
                 x = x + shipSpeed / fps;
         } else if (shipMoving == UP) {
-            if ((y = y - shipSpeed / fps) <= 0)
-                y = length * 9;
+            if ((y = y - shipSpeed / fps) >= (length * 9))
+                y = 0;
             else
-                y = y + shipSpeed / fps;
+                y = y - shipSpeed / fps;
         } else if (shipMoving == DOWN) {
             if ((y = y + shipSpeed / fps) >= (length * 9))
                 y = length * 9;
@@ -121,6 +125,7 @@ public class PlayerShip {
         rect.bottom = y + height;
         rect.left = x;
         rect.right = x + length;
+
 
     }
 }

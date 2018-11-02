@@ -2,10 +2,13 @@ package com.example.hectormediero.spaceinvadersdas.Views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.CountDownTimer;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,15 +16,18 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.hectormediero.spaceinvadersdas.Activities.ScoreActivity;
+import com.example.hectormediero.spaceinvadersdas.Models.Ambusher;
 import com.example.hectormediero.spaceinvadersdas.Models.Bullet;
 import com.example.hectormediero.spaceinvadersdas.Models.DefenceBrick;
 import com.example.hectormediero.spaceinvadersdas.Models.Invader;
 import com.example.hectormediero.spaceinvadersdas.Models.PlayerShip;
+import com.example.hectormediero.spaceinvadersdas.R;
 
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     Context context;
     final Intent scoreGame;
+    Bitmap dch, izq, arr, abj;
 
     // Esta es nuestra secuencia
     private Thread gameThread = null;
@@ -36,6 +42,9 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     // El juego esta pausado al iniciar
     private boolean paused = true;
+
+    //Contador para el Timer de los Ambushers
+    public int clock = -1;
 
     // Un objeto de lienzo (Canvas) y de pintar (Paint)
     private Canvas canvas;
@@ -63,9 +72,19 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private int nextBullet;
     private int maxInvaderBullets = 4;
 
+    // Las balas de los Ambushers
+    private Bullet[] ambusherBullets = new Bullet[200];
+    private int nextAmbusherBullet;
+    private int maxAmbusherBullets = 20;
+
+
     // Hasta 60 Invaders
     Invader[] invaders = new Invader[60];
     int numInvaders = 0;
+
+    //Hasta 60 Ambushers
+    private Ambusher[] ambusher = new Ambusher[60];
+    int numAmbusher = 0;
 
     // Las guaridas del jugador están construidas a base de ladrillos
     private DefenceBrick[] bricks = new DefenceBrick[400];
@@ -122,6 +141,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             invadersBullets[i] = new Bullet(screenY);
         }
 
+        //Prepara las balas de los Ambushers
+        for (int i = 0; i < ambusherBullets.length; i++) {
+            ambusherBullets[i] = new Bullet(screenY);
+        }
+
         // Construir un ejercito de invaders
         numInvaders = 0;
         for (int column = 0; column < 5; column++) {
@@ -130,6 +154,12 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 numInvaders++;
             }
         }
+
+        // Prepara los Ambushers
+        for (numAmbusher = 0; numAmbusher < 10; numAmbusher++) {
+            ambusher[numAmbusher] = new Ambusher(context, 0, 0, screenX, screenY);
+        }
+
         // Construir las guaridas
         numBricks = 0;
         for (int shelterNumber = 0; shelterNumber < 4; shelterNumber++) {
@@ -140,8 +170,21 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
             }
         }
-
     }
+
+    //Timer para los Ambushers, cada 10 segundos aparece uno, durante 10 minutos
+    CountDownTimer ambush = new CountDownTimer(600000, 10000) {
+        public void onTick(long millisUntilFinished) {
+            if (clock >= 0) {
+                ambusher[clock].setVisible();
+            }
+            clock++;
+        }
+
+        @Override
+        public void onFinish() {
+        }
+    };
 
     // Este método se ejecuta cuando el jugador empieza el juego
 
@@ -178,6 +221,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         // ¿Chocó el invader contra el lado de la pantalla?
         boolean bumped = false;
+        boolean bumpedAmbusher = false;
         contadorColor = 0;
         // ¿Ha perdido el jugador?
         boolean lost = false;
@@ -222,6 +266,35 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         }
 
+        //Actualiza a los Ambushers si están activos, y si llegan al final, desaparecen
+        for (int i = 0; i < numAmbusher; i++) {
+            if (ambusher[i].getVisibility()) {
+                ambusher[i].update(fps);
+                if (ambusher[i].TakeAim()) {
+                    if (ambusherBullets[nextAmbusherBullet].shoot(ambusher[i].getX() + ambusher[i].getLength() / 2, ambusher[i].getY(), bullet.DOWN)) {
+                        nextAmbusherBullet++;
+                        if (nextAmbusherBullet == maxAmbusherBullets) {
+                            nextAmbusherBullet = 0;
+                        }
+                    }
+                    if (ambusher[i].getX() > screenX - ambusher[i].getLength()
+                            || ambusher[i].getX() < 0) {
+
+                        bumpedAmbusher = true;
+
+                    }
+                }
+                if (ambusher[i].getX() > screenX - ambusher[i].getLength()
+                        || ambusher[i].getX() < 0) {
+                    bumpedAmbusher = true;
+                }
+                if (bumpedAmbusher) {
+                    ambusher[i].setInvisible();
+                }
+            }
+
+        }
+
 
         // ¿Chocó algún invader en el extremo de la pantalla?
         if (bumped) {
@@ -252,6 +325,13 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         for (int i = 0; i < invadersBullets.length; i++) {
             if (invadersBullets[i].getStatus()) {
                 invadersBullets[i].update(fps);
+            }
+        }
+
+        //Actualiza las balas del Ambusher
+        for (int i = 0; i < ambusherBullets.length; i++) {
+            if (ambusherBullets[i].getStatus()) {
+                ambusherBullets[i].update(fps);
             }
         }
 
@@ -287,6 +367,31 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
+        // Las balas de los Ambushers rebotan al llegar abajo o arriba
+        for (int i = 0; i < ambusherBullets.length; i++) {
+            if (ambusherBullets[i].getImpactPointY() > screenY) {
+                ambusherBullets[i].changeDirection(0);
+            } else if (ambusherBullets[i].getImpactPointY() < 0) {
+                ambusherBullets[i].changeDirection(1);
+            } else if (ambusherBullets[i].getStatus()) {
+                for (int k = 0; k < numAmbusher; k++) {
+                    if (ambusher[k].getVisibility()) {
+                        if (RectF.intersects(ambusherBullets[i].getRect(), ambusher[k].getRect()) && ambusherBullets[i].getDir() == true) {//ÑAPA
+                            ambusher[k].setInvisible();
+                            ambusherBullets[i].setInactive();
+                            nextAmbusherBullet--;
+                            score = score + 100;
+
+                            // Ha ganado el jugador
+                            if (score == numInvaders * 100) {
+                                win();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //Han chocado los invader con los ladrillos
         for (int i = 0; i < numInvaders; i++) {
             if (invaders[i].getVisibility()) {
@@ -300,6 +405,15 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
+        //Han chocado playerShip  con los brick
+        for (int j = 0; j < numBricks; j++) {
+            if (bricks[j].getVisibility()) {
+                if (RectF.intersects(playerShip.getRect(), bricks[j].getRect())) {
+                  gameOver();
+                }
+            }
+        }
+        
         // Ha tocado la bala del jugador a algún invader
         if (bullet.getStatus()) {
             for (int i = 0; i < numInvaders; i++) {
@@ -336,13 +450,25 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         }
 
-        if (contadorColor > 1) {
-            System.out.println("AQUI HAY MAS DE UNO" + contadorColor);
-            cambioColorAleatorio();
-        } else if (contadorColor == 1) {
-            System.out.println("UNO" + contadorColor);
-            cambioColorUnico();
+        // Ha impactado una bala Ambusher a un ladrillo de la guarida?
+        for (int i = 0; i < ambusherBullets.length; i++) {
+            if (ambusherBullets[i].getStatus()) {
+                for (int j = 0; j < numBricks; j++) {
+                    if (bricks[j].getVisibility()) {
+                        if (RectF.intersects(ambusherBullets[i].getRect(), bricks[j].getRect())) {
+                            // A collision has occurred
+                            ambusherBullets[i].setInactive();
+                            bricks[j].setInvisible();
+                            contadorColor++;
+
+                        }
+                    }
+                }
+            }
+
         }
+
+
         // Ha impactado una bala del jugador a un ladrillo de la guarida
         if (bullet.getStatus()) {
             for (int i = 0; i < numBricks; i++) {
@@ -351,6 +477,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         // A collision has occurred
                         bullet.setInactive();
                         bricks[i].setInvisible();
+                        contadorColor++;
                     }
                 }
             }
@@ -372,12 +499,31 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
+        // Ha impactado una bala de un Ambusher a la nave espacial del jugador
+        for (int i = 0; i < ambusherBullets.length; i++) {
+            if (ambusherBullets[i].getStatus()) {
+                if (RectF.intersects(playerShip.getRect(), ambusherBullets[i].getRect())) {
+                    ambusherBullets[i].setInactive();
+                    lives--;
+                    // ¿Se acabó el juego?
+                    if (lives == 0) {
+                        gameOver();
+                    }
+                }
+            }
+        }
+        if (contadorColor > 1) {
+            cambioColorAleatorio();
+        } else if (contadorColor == 1) {
+            cambioColorUnico();
+        }
+
     }
 
     private void cambioColorUnico() {
-        int color=(int) (Math.random() * 5);
+        int color = (int) (Math.random() * 5);
         for (int i = 0; i < numInvaders; i++) {
-            invaders[i].cambiarColor(hanCambiado,color);
+            invaders[i].cambiarColor(hanCambiado, color);
         }
         if (hanCambiado)
             hanCambiado = false;
@@ -396,6 +542,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void win() {
+        ambush.cancel();
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
@@ -404,6 +551,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
+        ambush.cancel();
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
@@ -425,15 +573,40 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             paint.setColor(Color.argb(255, 255, 255, 255));
 
             // Dibuja a la nave espacial del jugador
-            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), screenY - 50, paint);
+            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY(), paint);
+
+            dch = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.dcha);
+            izq = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.izq);
+            arr = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.arr);
+            abj = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.abj);
+
+            canvas.drawBitmap(dch, 150, screenY - 100, paint);
+            canvas.drawBitmap(izq, 0, screenY - 100, paint);
+            canvas.drawBitmap(arr, 75, screenY - 200, paint);
+            canvas.drawBitmap(abj, 75, screenY - 100, paint);
+
+
             // Dibuja a los invaders
             for (int i = 0; i < numInvaders; i++) {
                 if (invaders[i].getVisibility()) {
-                    if (uhOrOh) {
-                        canvas.drawBitmap(invaders[i].getBitmap(), invaders[i].getX(), invaders[i].getY(), paint);
-                    } else {
-                        canvas.drawBitmap(invaders[i].getBitmap2(), invaders[i].getX(), invaders[i].getY(), paint);
-                    }
+                    canvas.drawBitmap(invaders[i].getBitmap2(), invaders[i].getX(), invaders[i].getY() + invaders[i].getHeight(), paint);
+
+                }
+            }
+
+            //Dibuja los Ambushers, si son visibles
+            for (int i = 0; i < numAmbusher; i++) {
+                if (ambusher[i].getVisibility()) {
+                    canvas.drawBitmap(ambusher[i].getBitmap(), ambusher[i].getX(), ambusher[i].getY(), paint);
+
                 }
             }
             // Dibuja los ladrillos si están visibles
@@ -455,6 +628,14 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     canvas.drawRect(invadersBullets[i].getRect(), paint);
                 }
             }
+
+            //Lo mismo para Ambushers
+            for (int i = 0; i < ambusherBullets.length; i++) {
+                if (ambusherBullets[i].getStatus()) {
+                    canvas.drawRect(ambusherBullets[i].getRect(), paint);
+                }
+            }
+
             // Dibuja la puntuación y las vidas restantes
             // Cambia el color de la brocha
             paint.setColor(Color.argb(255, 249, 129, 0));
@@ -470,6 +651,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // apaga nuestra secuencia.
     public void pause() {
         playing = false;
+        ambush.cancel();
         try {
             gameThread.join();
         } catch (InterruptedException e) {
@@ -481,6 +663,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Si SpaceInvadersActivity es iniciado entonces
     // inicia nuestra secuencia.
     public void resume() {
+        ambush.start();
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
@@ -490,41 +673,51 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Así es que podemos anular este método y detectar toques a la pantalla.
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
+        float x = motionEvent.getX();
+        float y = motionEvent.getY();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
             // El jugador ha tocado la pantalla
             case MotionEvent.ACTION_DOWN:
-
                 paused = false;
+                System.out.println(x+","+y);
+                System.out.println("vs");
+                System.out.println("0-"+izq.getHeight()+","+(screenY-90)+"-"+ (screenY+izq.getWidth()));
 
 
-                //laterales de la pantalla
-                if (motionEvent.getY() > screenY - screenY / 8) {
-                    if (motionEvent.getX() <= (screenX / 3)) {
-                        //se mueve a la izq
+                    if (x > 0 && x < 0 + izq.getWidth() && y > screenY - 90 && y < screenY - 100 + izq.getHeight()) {
+                        //IZQ
+                        System.out.println("IZQ");
                         playerShip.setMovementState(playerShip.LEFT);
-                    } else if (((screenX / 3) * 2) < motionEvent.getX()) {
-                        //se mueve a la dcha
+                    } else if (x > 150 && x < 150 + izq.getWidth() && y > screenY - 100 && y < screenY - 90 + izq.getHeight()) {
+                        //DCHA
+                        System.out.println("DCHA");
                         playerShip.setMovementState(playerShip.RIGHT);
+                    } else if (x > 75 && x < 75 + izq.getWidth() && y > screenY - 200 && y < screenY - 190 + izq.getHeight()) {
+                        //UP
+                        System.out.println("UP");
+                        playerShip.setMovementState(playerShip.UP);
+                    } else if (x > 75 && x < 75 + izq.getWidth() && y > screenY - 100 && y < screenY - 90 + izq.getHeight()) {
+                        //DOWN
+                        System.out.println("DOWN");
+                        playerShip.setMovementState(playerShip.DOWN);
                     }
-                } else if (motionEvent.getY() < screenY - screenY / 8) {
+                if (motionEvent.getY() < screenY - screenY / 8) {
                     if (bullet.shoot(playerShip.getX() +
-                            playerShip.getLength() / 2, screenY, bullet.UP)) {
+                             playerShip.getLength() / 2, playerShip.getY(), bullet.UP));
 
-                    }
                 }
 
+                    break;
 
-                break;
+                    // El jugador a retirado el dedo de la pantalla
+                    case MotionEvent.ACTION_UP:
+                        //se para
+                        playerShip.setMovementState(playerShip.STOPPED);
+                        break;
+                }
 
-            // El jugador a retirado el dedo de la pantalla
-            case MotionEvent.ACTION_UP:
-                //se para
-                playerShip.setMovementState(playerShip.STOPPED);
-                break;
+                return true;
         }
 
-        return true;
     }
-
-}

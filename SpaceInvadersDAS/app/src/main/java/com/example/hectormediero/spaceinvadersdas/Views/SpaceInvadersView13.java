@@ -6,15 +6,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.media.Image;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.hectormediero.spaceinvadersdas.Activities.ScoreActivity;
 import com.example.hectormediero.spaceinvadersdas.Models.DefenceBrick;
 import com.example.hectormediero.spaceinvadersdas.Models.Invader;
 import com.example.hectormediero.spaceinvadersdas.Models.PlayerShip;
+import com.example.hectormediero.spaceinvadersdas.R;
 
 public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 

@@ -107,6 +107,10 @@ public class Invader {
         return y;
     }
 
+    public float getHeight() {
+        return height;
+    }
+
     public float getLength() {
         return length;
     }
