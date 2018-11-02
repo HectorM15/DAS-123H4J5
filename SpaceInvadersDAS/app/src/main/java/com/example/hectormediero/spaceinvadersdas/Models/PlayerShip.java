@@ -47,12 +47,12 @@ public class PlayerShip {
         rect = new RectF();
         this.screenX=screenX;
         this.screenY=screenY;
-        length = screenX / 15;
-        height = screenY / 15;
+        length = screenX / 16;
+        height = screenY / 16;
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
-        y = screenY - 20;
+        y = screenY - height -10;
 
         // Inicializa el bitmap
         bitmap = BitmapFactory.decodeResource(
@@ -77,6 +77,10 @@ public class PlayerShip {
 // define nuestra nave espacial disponible en la clase de SpaceInvadersView
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     public float getX() {
@@ -106,18 +110,18 @@ public class PlayerShip {
             else
                 x = x - shipSpeed / fps;
         } else if (shipMoving == RIGHT) {
-            if ((x = x + shipSpeed / fps) >= (length * 14))
-                x = length * 14;
+            if ((x = x + shipSpeed / fps) >= (length * 15))
+                x = length * 15;
             else
                 x = x + shipSpeed / fps;
         } else if (shipMoving == UP) {
-            if ((y = y - shipSpeed / fps) >= (height * 14))
-                y = height * 14;
+            if ((y = y - shipSpeed / fps) >= (height * 15))
+                y =0;
             else
                 y = y - shipSpeed / fps;
         } else if (shipMoving == DOWN) {
-            if ((y = y + shipSpeed / fps) >= (height * 14))
-                y =screenY-(height*14);
+            if ((y = y + shipSpeed / fps) >= (height * 15))
+                y =(height*15);
             else
                 y = y + shipSpeed / fps;
         }

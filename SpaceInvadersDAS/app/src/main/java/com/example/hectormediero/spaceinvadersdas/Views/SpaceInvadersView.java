@@ -96,15 +96,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // Vidas
     private int lives = 1;
 
-    // ¿Que tan amenazador debe de ser el sonido?
-
-    // Cual amenazante sonido debe de seguir en reproducirse
-    private boolean uhOrOh;
-    // Cuando fué la última vez que reproducimos un amenazante sonido
-    private long lastMenaceTime = System.currentTimeMillis();
-
-    // Cuando inicializamos (call new()) en gameView
-
     // Este método especial de constructor se ejecuta
     public SpaceInvadersView(Context context, int x, int y) {
 
@@ -165,7 +156,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         for (int shelterNumber = 0; shelterNumber < 4; shelterNumber++) {
             for (int column = 0; column < 10; column++) {
                 for (int row = 0; row < 5; row++) {
-                    bricks[numBricks] = new DefenceBrick(row, column, shelterNumber, screenX, screenY);
+                    bricks[numBricks] = new DefenceBrick(row, column, shelterNumber, screenX, screenY-(int)invaders[1].getHeight());
                     numBricks++;
                 }
             }
@@ -471,13 +462,17 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
         // Ha impactado una bala del jugador a un ladrillo de la guarida
         if (bullet.getStatus()) {
-            for (int i = 0; i < numBricks; i++) {
-                if (bricks[i].getVisibility()) {
-                    if (RectF.intersects(bullet.getRect(), bricks[i].getRect())) {
-                        // A collision has occurred
-                        bullet.setInactive();
-                        bricks[i].setInvisible();
-                        contadorColor++;
+            if (RectF.intersects(bullet.getRect(), playerShip.getRect())) {
+                gameOver();
+            } else {
+                for (int i = 0; i < numBricks; i++) {
+                    if (bricks[i].getVisibility()) {
+                        if (RectF.intersects(bullet.getRect(), bricks[i].getRect())) {
+                            // A collision has occurred
+                            bullet.setInactive();
+                            bricks[i].setInvisible();
+                            contadorColor++;
+                        }
                     }
                 }
             }
@@ -573,7 +568,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             paint.setColor(Color.argb(255, 255, 255, 255));
 
             // Dibuja a la nave espacial del jugador
-            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY(), paint);
+            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY()-playerShip.getHeight(), paint);
 
             dch = BitmapFactory.decodeResource(
                     context.getResources(),
@@ -588,8 +583,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     context.getResources(),
                     R.drawable.abj);
 
-            canvas.drawBitmap(dch, 150, screenY - 100, paint);
-            canvas.drawBitmap(izq, 0, screenY - 100, paint);
+            canvas.drawBitmap(dch, 150, screenY - 150, paint);
+            canvas.drawBitmap(izq, 0, screenY - 150, paint);
             canvas.drawBitmap(arr, 75, screenY - 200, paint);
             canvas.drawBitmap(abj, 75, screenY - 100, paint);
 
@@ -681,11 +676,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_DOWN:
                 paused = false;
 
-                if (x > 0 && x < 0 + izq.getWidth() && y > screenY - 90 && y < screenY - 100 + izq.getHeight()) {
+                if (x > 0 && x < 0 + izq.getWidth() && y > screenY - 140 && y < screenY - 150 + izq.getHeight()) {
                     //IZQ
-                   // System.out.println("IZQ");
+                    // System.out.println("IZQ");
                     playerShip.setMovementState(playerShip.LEFT);
-                } else if (x > 150 && x < 150 + izq.getWidth() && y > screenY - 100 && y < screenY - 90 + izq.getHeight()) {
+                } else if (x > 150 && x < 150 + izq.getWidth() && y > screenY - 150 && y < screenY - 140 + izq.getHeight()) {
                     //DCHA
                     //System.out.println("DCHA");
                     playerShip.setMovementState(playerShip.RIGHT);
@@ -699,7 +694,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     playerShip.setMovementState(playerShip.DOWN);
                 } else if (motionEvent.getY() < screenY - screenY / 8) {
                     if (bullet.shoot(playerShip.getX() +
-                            playerShip.getLength() / 2, playerShip.getY(), bullet.UP)) ;
+                            playerShip.getLength() / 2, playerShip.getY()-playerShip.getHeight()+5, bullet.UP)) ;
 
                 }
                 break;
