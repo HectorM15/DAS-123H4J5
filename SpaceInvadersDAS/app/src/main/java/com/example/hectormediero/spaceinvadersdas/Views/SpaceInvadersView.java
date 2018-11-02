@@ -413,7 +413,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                 }
             }
         }
-        
+
         // Ha tocado la bala del jugador a algún invader
         if (bullet.getStatus()) {
             for (int i = 0; i < numInvaders; i++) {
@@ -701,8 +701,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                         //DOWN
                         System.out.println("DOWN");
                         playerShip.setMovementState(playerShip.DOWN);
-                    }
-                if (motionEvent.getY() < screenY - screenY / 8) {
+                    } else if (motionEvent.getY() < screenY - screenY / 8) {
                     if (bullet.shoot(playerShip.getX() +
                              playerShip.getLength() / 2, playerShip.getY(), bullet.UP));
 

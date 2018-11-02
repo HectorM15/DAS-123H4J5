@@ -45,8 +45,8 @@ public class PlayerShip {
         // Inicializa un RectF vacío
         rect = new RectF();
 
-        length = screenX / 10;
-        height = screenY / 10;
+        length = screenX / 15;
+        height = screenY / 15;
 
         // Inicia la nave en el centro de la pantalla aproximadamente
         x = screenX / 2;
@@ -104,18 +104,18 @@ public class PlayerShip {
             else
                 x = x - shipSpeed / fps;
         } else if (shipMoving == RIGHT) {
-            if ((x = x + shipSpeed / fps) >= (length * 9))
-                x = length * 9;
+            if ((x = x + shipSpeed / fps) >= (length * 14))
+                x = length * 14;
             else
                 x = x + shipSpeed / fps;
         } else if (shipMoving == UP) {
-            if ((y = y - shipSpeed / fps) >= (length * 9))
+            if ((y = y - shipSpeed / fps) >= (height * 14))
                 y = 0;
             else
                 y = y - shipSpeed / fps;
         } else if (shipMoving == DOWN) {
-            if ((y = y + shipSpeed / fps) >= (length * 9))
-                y = length * 9;
+            if ((y = y + shipSpeed / fps) >= (height * 14))
+                y = height * 14;
             else
                 y = y + shipSpeed / fps;
         }
