@@ -110,12 +110,12 @@ public class PlayerShip {
                 x = x + shipSpeed / fps;
         } else if (shipMoving == UP) {
             if ((y = y - shipSpeed / fps) >= (height * 14))
-                y = 0;
+                y = height * 14;
             else
                 y = y - shipSpeed / fps;
         } else if (shipMoving == DOWN) {
             if ((y = y + shipSpeed / fps) >= (height * 14))
-                y = height * 14;
+                y =0;
             else
                 y = y + shipSpeed / fps;
         }
