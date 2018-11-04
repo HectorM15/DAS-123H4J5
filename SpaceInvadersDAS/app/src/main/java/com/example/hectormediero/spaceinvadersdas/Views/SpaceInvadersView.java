@@ -1,5 +1,6 @@
 package com.example.hectormediero.spaceinvadersdas.Views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,6 +24,16 @@ import com.example.hectormediero.spaceinvadersdas.Models.DefenceBrick;
 import com.example.hectormediero.spaceinvadersdas.Models.Invader;
 import com.example.hectormediero.spaceinvadersdas.Models.PlayerShip;
 import com.example.hectormediero.spaceinvadersdas.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.INTERNO;
+import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.SD;
 
 public class SpaceInvadersView extends SurfaceView implements Runnable {
 
@@ -156,7 +168,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         for (int shelterNumber = 0; shelterNumber < 4; shelterNumber++) {
             for (int column = 0; column < 10; column++) {
                 for (int row = 0; row < 5; row++) {
-                    bricks[numBricks] = new DefenceBrick(row, column, shelterNumber, screenX, screenY-(int)invaders[1].getHeight());
+                    bricks[numBricks] = new DefenceBrick(row, column, shelterNumber, screenX, screenY - (int) invaders[1].getHeight());
                     numBricks++;
                 }
             }
@@ -541,6 +553,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
+
         context.startActivity(scoreGame);
 
     }
@@ -550,6 +563,21 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
+        OutputStreamWriter fout = null;
+        try {
+
+            //fout = new OutputStreamWriter(context.getApplicationContext().openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
+            FileWriter TextOut = new FileWriter("puntuaciones.txt", true);
+            //fout.write("usuario¬" + score + "#");
+            //fout.close();
+            TextOut.write("usuario¬"+score+"#");
+            TextOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         context.startActivity(scoreGame);
     }
 
@@ -568,7 +596,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             paint.setColor(Color.argb(255, 255, 255, 255));
 
             // Dibuja a la nave espacial del jugador
-            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY()-playerShip.getHeight(), paint);
+            canvas.drawBitmap(playerShip.getBitmap(), playerShip.getX(), playerShip.getY() - playerShip.getHeight(), paint);
 
             dch = BitmapFactory.decodeResource(
                     context.getResources(),
@@ -694,7 +722,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
                     playerShip.setMovementState(playerShip.DOWN);
                 } else if (motionEvent.getY() < screenY - screenY / 8) {
                     if (bullet.shoot(playerShip.getX() +
-                            playerShip.getLength() / 2, playerShip.getY()-playerShip.getHeight()+5, bullet.UP)) ;
+                            playerShip.getLength() / 2, playerShip.getY() - playerShip.getHeight() + 5, bullet.UP))
+                        ;
 
                 }
                 break;
@@ -708,4 +737,25 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         return true;
     }
 
+    public void guardarEnFichero(int tipo, String texto) {
+        File f = null;
+        FileOutputStream fos = null;
+        try {
+            if (tipo == SD) {
+                File ruta_sd = Environment.getExternalStorageDirectory();
+                f = new File(ruta_sd.getAbsolutePath(), "puntuaciones.dat");
+                fos = new FileOutputStream(f);
+            } else if (tipo == INTERNO) {
+                fos = context.getApplicationContext().openFileOutput("puntuaciones.dat", Context.MODE_PRIVATE);
+            }
+            OutputStreamWriter fout = new OutputStreamWriter(fos);
+            fout.write(texto);
+            fout.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("fnf");
+        } catch (IOException e) {
+            System.out.println("io");
+        }
+
+    }
 }

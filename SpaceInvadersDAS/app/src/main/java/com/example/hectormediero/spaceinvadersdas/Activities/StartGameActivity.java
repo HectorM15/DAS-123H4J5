@@ -1,7 +1,10 @@
 package com.example.hectormediero.spaceinvadersdas.Activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,13 @@ public class StartGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
+
+        //Verifica si el permiso de la cámara no está concedido
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //Si el permiso no se encuentra concedido se solicita
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+        }
+
         Button btnEmpezar;
         final Intent  spaceGame = new Intent(getApplicationContext(), SpaceInvaderActivity.class);
 
