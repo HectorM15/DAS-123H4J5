@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.INTERNO;
 import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.SD;
@@ -42,6 +45,7 @@ public class ScoreActivity extends AppCompatActivity {
     private BaseDeDatosPuntuaciones bdd;
     private String mayor13,username;
     private Integer score;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +93,8 @@ public class ScoreActivity extends AppCompatActivity {
             Log.i("Ficheros", "ALGO PASA!");
         }
 
+
+        Collections.sort(arrayPuntuaciones);
         String[] array = new String[arrayPuntuaciones.size()];
         int contador = 0;
         for (Score s : arrayPuntuaciones) {

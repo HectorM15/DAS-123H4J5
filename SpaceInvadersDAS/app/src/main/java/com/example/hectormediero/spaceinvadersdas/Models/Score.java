@@ -2,7 +2,7 @@ package com.example.hectormediero.spaceinvadersdas.Models;
 
 import android.support.annotation.NonNull;
 
-public class Score {
+public class Score implements Comparable {
 
     private Integer puntuacion;
     private String nombre;
@@ -33,4 +33,13 @@ public class Score {
        return (nombre+"  Puntuacion: "+puntuacion);
     }
 
+    @Override
+    public int compareTo(@NonNull Object o) {
+        if(this.puntuacion>((Score) o).puntuacion){
+            return -1;
+        }else if(this.puntuacion<((Score) o).puntuacion){
+            return 1;
+        }
+        return 0;
+    }
 }
