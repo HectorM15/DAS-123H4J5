@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,7 +40,7 @@ import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.leerDeFi
 public class ScoreActivity extends AppCompatActivity {
     final private Integer maxNumScores = 15;
     private BaseDeDatosPuntuaciones bdd;
-    private String mayor13;
+    private String mayor13,username;
     private Integer score;
 
     @Override
@@ -54,6 +55,7 @@ public class ScoreActivity extends AppCompatActivity {
         String result = getIntent().getExtras().getString("result");
         mayor13 = getIntent().getExtras().getString("mayor13");
         score = getIntent().getExtras().getInt("score");
+        username = getIntent().getExtras().getString("username");
 
         TextView resultTV = findViewById(R.id.GameResult);
         // TextView scoreTV = findViewById(R.id.GameScore);
@@ -63,7 +65,10 @@ public class ScoreActivity extends AppCompatActivity {
         arrayPuntuaciones.add(new Score(2000, "Pablo"));
         arrayPuntuaciones.add(new Score(1000, "Karol"));
         try {
-            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("puntuaciones.txt")));
+            BufferedReader fin =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    openFileInput("nueva_puntuacion.txt")));
             String lineaActual;
             while ((lineaActual = fin.readLine()) != null) {
                 System.out.println(lineaActual);
@@ -73,14 +78,15 @@ public class ScoreActivity extends AppCompatActivity {
                     System.out.println(datosPuntuacion[0] + "-" + datosPuntuacion[1]);
                     arrayPuntuaciones.add(new Score(Integer.parseInt(datosPuntuacion[1]), datosPuntuacion[0]));
                 }
-                fin.close();
             }
+            fin.close();
 
-
+            Log.i("Ficheros", "Fichero leido!");
+            Log.e("Ficheros", "Texto: " + lineaActual);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.i("Ficheros", "Fichero no leido!");
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.i("Ficheros", "ALGO PASA!");
         }
 
         String[] array = new String[arrayPuntuaciones.size()];
@@ -116,6 +122,7 @@ public class ScoreActivity extends AppCompatActivity {
         rejugarDialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
                 spaceGame.putExtra("mayor13", mayor13);
+                spaceGame.putExtra("username", username);
                 startActivity(spaceGame);
                 finish();
             }

@@ -19,21 +19,22 @@ public class SpaceInvaderActivity extends Activity {
     // y responderá a los toques a la pantalla
     SpaceInvadersView spaceInvadersView;
     SpaceInvadersView13 spaceInvadersView13;
-    String mayor13;
+    String mayor13,username;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          mayor13=getIntent().getExtras().getString("mayor13");
+        username=getIntent().getExtras().getString("username");
         // Obtener un objeto de Display para accesar a los detalles de la pantalla
         Display display = getWindowManager().getDefaultDisplay();
         // Cargar la resolución a un objeto de Point
         Point size = new Point();
         display.getSize(size);
-        System.out.println(mayor13);
+        System.out.println(username);
         if(mayor13.equals("true")){
-             spaceInvadersView = new SpaceInvadersView(this, size.x, size.y);
+             spaceInvadersView = new SpaceInvadersView(this, size.x, size.y,username);
             setContentView(spaceInvadersView);
         }else{
              spaceInvadersView13 = new SpaceInvadersView13(this, size.x, size.y);
@@ -70,4 +71,7 @@ public class SpaceInvaderActivity extends Activity {
         }
     }
 
+    public String getUsername() {
+        return username;
+    }
 }

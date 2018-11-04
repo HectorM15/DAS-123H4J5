@@ -23,13 +23,17 @@ import com.example.hectormediero.spaceinvadersdas.Models.Bullet;
 import com.example.hectormediero.spaceinvadersdas.Models.DefenceBrick;
 import com.example.hectormediero.spaceinvadersdas.Models.Invader;
 import com.example.hectormediero.spaceinvadersdas.Models.PlayerShip;
+import com.example.hectormediero.spaceinvadersdas.Models.Score;
 import com.example.hectormediero.spaceinvadersdas.R;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.INTERNO;
@@ -107,9 +111,10 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     // Vidas
     private int lives = 1;
+    private String username;
 
     // Este método especial de constructor se ejecuta
-    public SpaceInvadersView(Context context, int x, int y) {
+    public SpaceInvadersView(Context context, int x, int y, String nombreUsuario) {
 
         // La siguiente línea del código le pide a
         // la clase de SurfaceView que prepare nuestro objeto.
@@ -118,6 +123,8 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         // Hace una copia del "context" disponible globalmete para que la usemos en otro método
         this.context = context;
         scoreGame = new Intent(context.getApplicationContext(), ScoreActivity.class);
+
+        username = nombreUsuario;
         // Inicializa los objetos de ourHolder y paint
         ourHolder = getHolder();
         paint = new Paint();
@@ -553,6 +560,35 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
+        scoreGame.putExtra("username", username);
+      /*  try {
+
+            //fout = new OutputStreamWriter(context.getApplicationContext().openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
+            FileWriter TextOut = new FileWriter("puntuaciones.txt", true);
+            //fout.write("usuario¬" + score + "#");
+            //fout.close();
+            TextOut.write(username+"¬"+score+"#");
+            TextOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        String lineaActual = "";
+        try {
+
+            OutputStreamWriter fout =
+                    new OutputStreamWriter(
+                            context.openFileOutput("nueva_puntuacion.txt", Context.MODE_PRIVATE));
+
+            fout.write(username + "¬" + score + "#");
+            fout.close();
+
+            Log.i("Ficheros", "Fichero creado!");
+        } catch (Exception ex) {
+            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
+        }
 
         context.startActivity(scoreGame);
 
@@ -563,20 +599,35 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "GAME OVER");
         scoreGame.putExtra("score", score);
-        OutputStreamWriter fout = null;
+        scoreGame.putExtra("username", username);
+        System.out.println(score);
+        String lineaAleer = "";
         try {
-
-            //fout = new OutputStreamWriter(context.getApplicationContext().openFileOutput("puntuaciones.txt", Context.MODE_PRIVATE));
-            FileWriter TextOut = new FileWriter("puntuaciones.txt", true);
-            //fout.write("usuario¬" + score + "#");
-            //fout.close();
-            TextOut.write("usuario¬"+score+"#");
-            TextOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            BufferedReader fin =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    context.openFileInput("nueva_puntuacion.txt")));
+            lineaAleer = fin.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+
+            OutputStreamWriter fout =
+                    new OutputStreamWriter(
+                            context.openFileOutput("nueva_puntuacion.txt", Context.MODE_PRIVATE));
+
+            if (lineaAleer != null)
+                fout.write(lineaAleer + "" + username + "¬" + score + "#");
+            else
+                fout.write(  username + "¬" + score + "#");
+            fout.close();
+
+            Log.i("Ficheros", "Fichero creado!");
+        } catch (Exception ex) {
+            Log.e("Ficheros", "Error al escribir fichero a memoria interna");
+        }
+
 
         context.startActivity(scoreGame);
     }
