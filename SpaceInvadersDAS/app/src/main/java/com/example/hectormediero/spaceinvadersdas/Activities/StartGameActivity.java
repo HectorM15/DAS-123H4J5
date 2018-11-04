@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ public class StartGameActivity extends AppCompatActivity {
         final Intent spaceGame = new Intent(getApplicationContext(), SpaceInvaderActivity.class);
         final EditText username = findViewById(R.id.userName);
         btnEmpezar = findViewById(R.id.startGameButton);
-
+       // final CheckBox checkBoxDisparos= findViewById(R.id.cbDisparos);
         final AlertDialog.Builder restEdad = new AlertDialog.Builder(this);
         restEdad.setTitle("Importante");
         restEdad.setMessage("¿ Tiene usted más de 13 años ?");
@@ -41,6 +42,7 @@ public class StartGameActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogo1, int id) {
                 spaceGame.putExtra("mayor13", "true");
                 spaceGame.putExtra("username", username.getText().toString());
+               // spaceGame.putExtra("rebotes",checkBoxDisparos.isActivated());
                 startActivity(spaceGame);
             }
         });
@@ -62,10 +64,4 @@ public class StartGameActivity extends AppCompatActivity {
         });
     }
 
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 }

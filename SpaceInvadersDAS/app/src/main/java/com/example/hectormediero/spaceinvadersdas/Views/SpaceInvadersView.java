@@ -113,6 +113,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     private int lives = 1;
     private String username;
 
+
     // Este método especial de constructor se ejecuta
     public SpaceInvadersView(Context context, int x, int y, String nombreUsuario) {
 
@@ -123,7 +124,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         // Hace una copia del "context" disponible globalmete para que la usemos en otro método
         this.context = context;
         scoreGame = new Intent(context.getApplicationContext(), ScoreActivity.class);
-
         username = nombreUsuario;
         // Inicializa los objetos de ourHolder y paint
         ourHolder = getHolder();
@@ -668,6 +668,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             canvas.drawBitmap(abj, 75, screenY - 100, paint);
 
 
+
             // Dibuja a los invaders
             for (int i = 0; i < numInvaders; i++) {
                 if (invaders[i].getVisibility()) {
@@ -788,25 +789,5 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         return true;
     }
 
-    public void guardarEnFichero(int tipo, String texto) {
-        File f = null;
-        FileOutputStream fos = null;
-        try {
-            if (tipo == SD) {
-                File ruta_sd = Environment.getExternalStorageDirectory();
-                f = new File(ruta_sd.getAbsolutePath(), "puntuaciones.dat");
-                fos = new FileOutputStream(f);
-            } else if (tipo == INTERNO) {
-                fos = context.getApplicationContext().openFileOutput("puntuaciones.dat", Context.MODE_PRIVATE);
-            }
-            OutputStreamWriter fout = new OutputStreamWriter(fos);
-            fout.write(texto);
-            fout.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("fnf");
-        } catch (IOException e) {
-            System.out.println("io");
-        }
 
-    }
 }

@@ -20,6 +20,7 @@ public class SpaceInvaderActivity extends Activity {
     SpaceInvadersView spaceInvadersView;
     SpaceInvadersView13 spaceInvadersView13;
     String mayor13,username;
+    Boolean rebotes;
 
 
     @Override
@@ -27,6 +28,7 @@ public class SpaceInvaderActivity extends Activity {
         super.onCreate(savedInstanceState);
          mayor13=getIntent().getExtras().getString("mayor13");
         username=getIntent().getExtras().getString("username");
+        rebotes= getIntent().getExtras().getBoolean("rebotes");
         // Obtener un objeto de Display para accesar a los detalles de la pantalla
         Display display = getWindowManager().getDefaultDisplay();
         // Cargar la resolución a un objeto de Point

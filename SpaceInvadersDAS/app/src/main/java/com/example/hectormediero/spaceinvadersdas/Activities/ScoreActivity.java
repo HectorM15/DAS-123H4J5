@@ -43,7 +43,7 @@ import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.leerDeFi
 public class ScoreActivity extends AppCompatActivity {
     final private Integer maxNumScores = 15;
     private BaseDeDatosPuntuaciones bdd;
-    private String mayor13,username;
+    private String mayor13, username;
     private Integer score;
 
 
@@ -62,12 +62,8 @@ public class ScoreActivity extends AppCompatActivity {
         username = getIntent().getExtras().getString("username");
 
         TextView resultTV = findViewById(R.id.GameResult);
-        // TextView scoreTV = findViewById(R.id.GameScore);
         Button replayGame = findViewById(R.id.replayButton);
         final ArrayList<Score> arrayPuntuaciones = new ArrayList<>();
-        arrayPuntuaciones.add(new Score(3000, "Hector"));
-        arrayPuntuaciones.add(new Score(2000, "Pablo"));
-        arrayPuntuaciones.add(new Score(1000, "Karol"));
         try {
             BufferedReader fin =
                     new BufferedReader(
@@ -95,10 +91,11 @@ public class ScoreActivity extends AppCompatActivity {
 
 
         Collections.sort(arrayPuntuaciones);
-        String[] array = new String[arrayPuntuaciones.size()];
+        String[] array = new String[10];
         int contador = 0;
         for (Score s : arrayPuntuaciones) {
-            array[contador] = s.toString();
+            if (contador <= 9)
+                array[contador] = s.toString();
             contador++;
         }
         System.out.println(arrayPuntuaciones.toString());
@@ -113,7 +110,7 @@ public class ScoreActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                System.out.println(arrayPuntuaciones.get(position).getNombre());
+                Toast.makeText(getApplicationContext(), "TOP " + (position + 1), Toast.LENGTH_SHORT).show();
             }
         });
         resultTV.setText(result);

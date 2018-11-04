@@ -2,6 +2,8 @@ package com.example.hectormediero.spaceinvadersdas.Views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +26,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 
     Context context;
     final Intent scoreGame;
+    Bitmap dch, izq, arr, abj;
     // Esta es nuestra secuencia
     private Thread gameThread = null;
 
@@ -264,6 +267,26 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
                     }
                 }
             }
+
+            dch = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.dcha);
+            izq = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.izq);
+            arr = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.arr);
+            abj = BitmapFactory.decodeResource(
+                    context.getResources(),
+                    R.drawable.abj);
+
+            canvas.drawBitmap(dch, 150, screenY - 150, paint);
+            canvas.drawBitmap(izq, 0, screenY - 150, paint);
+            canvas.drawBitmap(arr, 75, screenY - 200, paint);
+            canvas.drawBitmap(abj, 75, screenY - 100, paint);
+
+
             // Dibuja los ladrillos si están visibles
             for (int i = 0; i < numBricks; i++) {
                 if (bricks[i].getVisibility()) {
@@ -306,25 +329,32 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
     // Así es que podemos anular este método y detectar toques a la pantalla.
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
+        float x = motionEvent.getX();
+        float y = motionEvent.getY();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
             // El jugador ha tocado la pantalla
             case MotionEvent.ACTION_DOWN:
-
                 paused = false;
 
-                //laterales de la pantalla
-                if (motionEvent.getX() <= (screenX / 3)) {
-                    //se mueve a la izq
+                if (x > 0 && x < 0 + izq.getWidth() && y > screenY - 140 && y < screenY - 150 + izq.getHeight()) {
+                    //IZQ
+                    // System.out.println("IZQ");
                     playerShip.setMovementState(playerShip.LEFT);
-                } else if (((screenX / 3) * 2) < motionEvent.getX()) {
-                    //se mueve a la dcha
+                } else if (x > 150 && x < 150 + izq.getWidth() && y > screenY - 150 && y < screenY - 140 + izq.getHeight()) {
+                    //DCHA
+                    //System.out.println("DCHA");
                     playerShip.setMovementState(playerShip.RIGHT);
+                } else if (x > 75 && x < 75 + izq.getWidth() && y > screenY - 200 && y < screenY - 190 + izq.getHeight()) {
+                    //UP
+                    //System.out.println("UP");
+                    playerShip.setMovementState(playerShip.UP);
+                } else if (x > 75 && x < 75 + izq.getWidth() && y > screenY - 100 && y < screenY - 90 + izq.getHeight()) {
+                    //DOWN
+                    //System.out.println("DOWN");
+                    playerShip.setMovementState(playerShip.DOWN);
                 }
-
-
                 break;
-
             // El jugador a retirado el dedo de la pantalla
             case MotionEvent.ACTION_UP:
                 //se para
@@ -334,5 +364,7 @@ public class SpaceInvadersView13 extends SurfaceView implements Runnable {
 
         return true;
     }
+
+
 
 }
