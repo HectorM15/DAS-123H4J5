@@ -1,5 +1,7 @@
 package com.example.hectormediero.spaceinvadersdas.Models;
 
+import android.support.annotation.NonNull;
+
 public class Score {
 
     private Integer puntuacion;
@@ -30,4 +32,5 @@ public class Score {
     public String toString() {
        return (nombre+"  Puntuacion: "+puntuacion);
     }
+
 }

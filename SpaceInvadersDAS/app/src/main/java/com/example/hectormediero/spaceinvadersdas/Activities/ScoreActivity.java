@@ -68,7 +68,7 @@ public class ScoreActivity extends AppCompatActivity {
             BufferedReader fin =
                     new BufferedReader(
                             new InputStreamReader(
-                                    openFileInput("nueva_puntuacion.txt")));
+                                    openFileInput("nueva_puntuacion2.txt")));
             String lineaActual;
             while ((lineaActual = fin.readLine()) != null) {
                 System.out.println(lineaActual);
@@ -96,9 +96,7 @@ public class ScoreActivity extends AppCompatActivity {
             contador++;
         }
         System.out.println(arrayPuntuaciones.toString());
-        /*CustomList listAdapter = new
-                CustomList(this,arrayPuntuaciones);
-        */
+
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.row_view, array);
@@ -113,8 +111,6 @@ public class ScoreActivity extends AppCompatActivity {
             }
         });
         resultTV.setText(result);
-        // scoreTV.setText(Integer.toString(score));
-
 
         final AlertDialog.Builder rejugarDialog = new AlertDialog.Builder(this);
         rejugarDialog.setTitle("Aviso");
