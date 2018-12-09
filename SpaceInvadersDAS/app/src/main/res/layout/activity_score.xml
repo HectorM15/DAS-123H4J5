@@ -71,7 +71,8 @@
         <ListView
             android:id="@+id/lista_puntuaciones"
             android:layout_width="match_parent"
-            android:layout_height="364dp" />
+            android:layout_height="364dp"
+            tools:listitem="@layout/item_list_view"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -77,7 +77,7 @@ public class ScoreActivity extends AppCompatActivity {
                 for (int i = 0; i < puntuacioneGuardadas.length; i++) {
                     String[] datosPuntuacion = puntuacioneGuardadas[i].split("¬");
                     System.out.println(datosPuntuacion[0] + "-" + datosPuntuacion[1]);
-                    arrayPuntuaciones.add(new Score(Integer.parseInt(datosPuntuacion[1]), datosPuntuacion[0],R.drawable.amaranja));
+                    arrayPuntuaciones.add(new Score(Integer.parseInt(datosPuntuacion[1]), datosPuntuacion[0], R.drawable.amaranja));
                 }
             }
             fin.close();
@@ -89,14 +89,15 @@ public class ScoreActivity extends AppCompatActivity {
             Log.i("Ficheros", "ALGO PASA!");
         }
 
+        if (arrayPuntuaciones.size() > 0) {
+            Collections.sort(arrayPuntuaciones);
+            System.out.println(arrayPuntuaciones.toString());
 
-        Collections.sort(arrayPuntuaciones);
-        System.out.println(arrayPuntuaciones.toString());
-        ScoreAdapter scoresAdapter = new ScoreAdapter(getApplicationContext(), arrayPuntuaciones);
+        }
 
+        ScoreAdapter scoresAdapter = new ScoreAdapter(this, arrayPuntuaciones);
 
-
-        ListView listView = (ListView) findViewById(R.id.lista_puntuaciones);
+        ListView listView = findViewById(R.id.lista_puntuaciones);
         listView.setAdapter(scoresAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

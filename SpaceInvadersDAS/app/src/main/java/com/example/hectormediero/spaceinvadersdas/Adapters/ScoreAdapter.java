@@ -17,10 +17,9 @@ import java.util.ArrayList;
 public class ScoreAdapter extends ArrayAdapter<Score> {
     private Context context;
     private ArrayList<Score> datos;
-    private Score n1;
 
     public ScoreAdapter(Context context, ArrayList datos) {
-        super(context, R.layout.item_list_view);
+        super(context, R.layout.item_list_view,datos);
         this.context=context;
         this.datos=datos;
     }
@@ -39,8 +38,8 @@ public class ScoreAdapter extends ArrayAdapter<Score> {
         imagen.setImageResource(R.drawable.celeste);
 
         TextView numero = (TextView) item.findViewById(R.id.etNumero);
-       // numero.setText(datos.get(position).getPuntuacion().toString());
-        numero.setText("Hola");
+        numero.setText(datos.get(position).getPuntuacion().toString());
+        //numero.setText("Hola");
 
         TextView etiqueta = (TextView) item.findViewById(R.id.etTag);
         etiqueta.setText(datos.get(position).getNombre());

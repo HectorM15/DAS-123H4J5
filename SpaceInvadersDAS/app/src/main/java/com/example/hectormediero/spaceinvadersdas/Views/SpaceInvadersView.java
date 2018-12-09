@@ -9,13 +9,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.example.hectormediero.spaceinvadersdas.Activities.ScoreActivity;
 import com.example.hectormediero.spaceinvadersdas.Models.Ambusher;
@@ -40,7 +43,7 @@ import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.INTERNO;
 import static com.example.hectormediero.spaceinvadersdas.BDD.FileHelper.SD;
 
 public class SpaceInvadersView extends SurfaceView implements Runnable {
-
+    public final static int RESP_TOMAR_FOTO = 1000;
     Context context;
     final Intent scoreGame;
     Bitmap dch, izq, arr, abj;
@@ -265,8 +268,6 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
             }
-
-            // Vamos a hacer algo nuevo aquí hacia el final de proyecto
 
         }
     }
@@ -644,9 +645,11 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
 
 
+
         context.startActivity(scoreGame);
 
     }
+
 
     private void gameOver() {
         tp.cancel();
