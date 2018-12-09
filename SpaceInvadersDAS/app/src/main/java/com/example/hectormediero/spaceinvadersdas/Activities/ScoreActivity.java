@@ -129,12 +129,13 @@ public class ScoreActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        replayGame.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                rejugarDialog.show();
-            }
-        });
+        if (score >= 500) {
+            replayGame.setOnClickListener(new Button.OnClickListener() {
+                public void onClick(View v) {
+                    rejugarDialog.show();
+                }
+            });
+        }
 
         String valor=findImage(username);
         if(!valor.equals("No")){

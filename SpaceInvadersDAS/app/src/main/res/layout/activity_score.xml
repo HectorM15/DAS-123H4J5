@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorAccent"
             android:drawablePadding="8dp"
-            android:text="Jugar de nuevo"
+            android:text="Jugar de nuevo (requiere 500 puntos)"
             android:textColor="@android:color/white" />
 
 
