@@ -6,10 +6,17 @@ public class Score implements Comparable {
 
     private Integer puntuacion;
     private String nombre;
+    private int imagen;
 
     public Score(Integer puntuacion, String nombre) {
         this.puntuacion = puntuacion;
         this.nombre = nombre;
+    }
+
+    public Score(int i, String s, int amaranja) {
+        this.puntuacion = i;
+        this.nombre = s;
+        this.imagen= amaranja;
     }
 
     public Integer getPuntuacion() {

@@ -134,4 +134,21 @@ public class PlayerShip {
 
 
     }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void actualizarRectangulo(float x, float y){
+        setX(x);
+        setY(y);
+        rect.top = y;
+        rect.bottom = y + height;
+        rect.left = x;
+        rect.right = x + length;
+    }
 }

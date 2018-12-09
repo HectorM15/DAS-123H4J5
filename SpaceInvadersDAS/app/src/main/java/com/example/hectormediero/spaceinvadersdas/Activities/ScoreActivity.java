@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hectormediero.spaceinvadersdas.Adapters.ScoreAdapter;
 import com.example.hectormediero.spaceinvadersdas.BDD.BaseDeDatosPuntuaciones;
 import com.example.hectormediero.spaceinvadersdas.R;
 import com.example.hectormediero.spaceinvadersdas.Models.Score;
@@ -76,13 +77,12 @@ public class ScoreActivity extends AppCompatActivity {
                 for (int i = 0; i < puntuacioneGuardadas.length; i++) {
                     String[] datosPuntuacion = puntuacioneGuardadas[i].split("¬");
                     System.out.println(datosPuntuacion[0] + "-" + datosPuntuacion[1]);
-                    arrayPuntuaciones.add(new Score(Integer.parseInt(datosPuntuacion[1]), datosPuntuacion[0]));
+                    arrayPuntuaciones.add(new Score(Integer.parseInt(datosPuntuacion[1]), datosPuntuacion[0],R.drawable.amaranja));
                 }
             }
             fin.close();
 
             Log.i("Ficheros", "Fichero leido!");
-            Log.e("Ficheros", "Texto: " + lineaActual);
         } catch (FileNotFoundException e) {
             Log.i("Ficheros", "Fichero no leido!");
         } catch (IOException e) {
@@ -91,20 +91,13 @@ public class ScoreActivity extends AppCompatActivity {
 
 
         Collections.sort(arrayPuntuaciones);
-        String[] array = new String[10];
-        int contador = 0;
-        for (Score s : arrayPuntuaciones) {
-            if (contador <= 9)
-                array[contador] = s.toString();
-            contador++;
-        }
         System.out.println(arrayPuntuaciones.toString());
+        ScoreAdapter scoresAdapter = new ScoreAdapter(getApplicationContext(), arrayPuntuaciones);
 
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.row_view, array);
+
         ListView listView = (ListView) findViewById(R.id.lista_puntuaciones);
-        listView.setAdapter(adapter);
+        listView.setAdapter(scoresAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

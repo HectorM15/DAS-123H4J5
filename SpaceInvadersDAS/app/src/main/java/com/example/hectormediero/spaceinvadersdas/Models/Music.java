@@ -14,7 +14,7 @@ public class Music {
     private int nCancion;
     private int totalCanciones;
 
-    CountDownTimer cdt = new CountDownTimer(20000,1000) {
+    CountDownTimer cdt = new CountDownTimer(2000000,1000) {
         @Override
         public void onTick(long millisUntilFinished) {
 
@@ -23,9 +23,8 @@ public class Music {
         @Override
         public void onFinish() {
             mpList.get(nCancion).stop();
-            mpList.get(nCancion).release();
             nCancion = (int) Math.random() * totalCanciones;
-            iniciarMusica();
+            //iniciarMusica();
         }
     };
 

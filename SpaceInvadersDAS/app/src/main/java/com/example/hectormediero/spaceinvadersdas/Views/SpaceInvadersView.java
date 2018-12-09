@@ -182,6 +182,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         }
     }
 
+
     //Timer para los Ambushers, cada 10 segundos aparece uno, durante 10 minutos
     CountDownTimer ambush = new CountDownTimer(600000, 10000) {
         public void onTick(long millisUntilFinished) {
@@ -195,6 +196,49 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
         public void onFinish() {
         }
     };
+
+    //Timer para el Teletransporte , cada 3 segundos,durante 10 minutos
+    CountDownTimer tp = new CountDownTimer(600000, 3000) {
+        public void onTick(long millisUntilFinished) {
+            int contador =0;
+
+            int nVertical = (int) (Math.random() * (screenY - playerShip.getHeight())) + 1;
+            int nHorizontal = (int) (Math.random() * (screenX - playerShip.getLength())) + 1;
+            RectF rectaux = new RectF();
+            rectaux.top = nVertical;
+            rectaux.bottom = nVertical + playerShip.getHeight();
+            rectaux.left = nHorizontal;
+            rectaux.right = nHorizontal + playerShip.getLength();
+
+
+
+            for(int i = 0;i < invadersBullets.length;i++) {
+                if (rectaux.intersect(invadersBullets[i].getRect())) {
+                    contador++;
+                } else {
+                    for (int j = 0;j < numInvaders;j++) {
+                        if (rectaux.intersect(invaders[j].getRect())) {
+                            contador++;
+                        } else {
+                            for (int k = 0;k < numBricks;k++) {
+                                if (rectaux.intersect(bricks[k].getRect())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (contador  == 0) {
+                playerShip.actualizarRectangulo(nHorizontal, nVertical);
+            }
+        }
+        @Override
+        public void onFinish() {
+        }
+    };
+
+
 
     // Este método se ejecuta cuando el jugador empieza el juego
 
@@ -424,6 +468,15 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             }
         }
 
+        //Ha chocado playership con invader
+        for (int j = 0; j < numInvaders; j++) {
+            if (invaders[j].getVisibility()) {
+                if (RectF.intersects(playerShip.getRect(), invaders[j].getRect())) {
+                    gameOver();
+                }
+            }
+        }
+
         // Ha tocado la bala del jugador a algún invader
         if (bullet.getStatus()) {
             for (int i = 0; i < numInvaders; i++) {
@@ -557,6 +610,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
     private void win() {
         ambush.cancel();
+        tp.cancel();
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "YOU WON");
         scoreGame.putExtra("score", score);
@@ -595,6 +649,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     }
 
     private void gameOver() {
+        tp.cancel();
         ambush.cancel();
         scoreGame.putExtra("mayor13", "true");
         scoreGame.putExtra("result", "GAME OVER");
@@ -727,6 +782,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     public void pause() {
         playing = false;
         ambush.cancel();
+        tp.cancel();
         try {
             gameThread.join();
         } catch (InterruptedException e) {
@@ -739,6 +795,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
     // inicia nuestra secuencia.
     public void resume() {
         ambush.start();
+        tp.start();
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();

@@ -16,14 +16,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.hectormediero.spaceinvadersdas.Activities.SpaceInvaderActivity;
+import com.example.hectormediero.spaceinvadersdas.Models.Music;
 import com.example.hectormediero.spaceinvadersdas.R;
 
 public class StartGameActivity extends AppCompatActivity {
-
+    Music music;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
+        music= new Music(getApplicationContext());
+        music.iniciarMusica();
         //Verifica si el permiso de la cámara no está concedido
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             //Si el permiso no se encuentra concedido se solicita
