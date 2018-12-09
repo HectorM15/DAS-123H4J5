@@ -3,6 +3,7 @@ package com.example.hectormediero.spaceinvadersdas.Models;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.util.Log;
 
 import com.example.hectormediero.spaceinvadersdas.Activities.SpaceInvaderActivity;
 import com.example.hectormediero.spaceinvadersdas.R;
@@ -14,7 +15,7 @@ public class Music {
     private int nCancion;
     private int totalCanciones;
 
-    CountDownTimer cdt = new CountDownTimer(2000000,1000) {
+    CountDownTimer cdt = new CountDownTimer(20000,1000) {
         @Override
         public void onTick(long millisUntilFinished) {
 
@@ -23,8 +24,8 @@ public class Music {
         @Override
         public void onFinish() {
             mpList.get(nCancion).stop();
-            nCancion = (int) Math.random() * totalCanciones;
-            //iniciarMusica();
+            cdt.cancel();
+            iniciarMusica();
         }
     };
 
@@ -51,11 +52,12 @@ public class Music {
         mpList.add(MediaPlayer.create(context,R.raw.wake_me_up));
         mpList.add(MediaPlayer.create(context,R.raw.what_is_love));
 
-        totalCanciones = this.mpList.size();
-        nCancion = (int) Math.random() * totalCanciones;
+        totalCanciones = mpList.size();
     }
 
     public void iniciarMusica(){
+        nCancion = (int) (Math.random() * totalCanciones);
+        Log.d("music track",Integer.toString(nCancion));
         mpList.get(nCancion).start();
         cdt.start();
     }
