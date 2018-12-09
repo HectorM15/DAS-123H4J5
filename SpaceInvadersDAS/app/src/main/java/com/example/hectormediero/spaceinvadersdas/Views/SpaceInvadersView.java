@@ -621,7 +621,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             BufferedReader fin =
                     new BufferedReader(
                             new InputStreamReader(
-                                    context.openFileInput("nueva_puntuacion2.txt")));
+                                    context.openFileInput("nueva_puntuacioness2.txt")));
             lineaAleer = fin.readLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -630,20 +630,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
             OutputStreamWriter fout =
                     new OutputStreamWriter(
-                            context.openFileOutput("nueva_puntuacion2.txt", Context.MODE_PRIVATE));
+                            context.openFileOutput("nueva_puntuacioness2.txt", Context.MODE_PRIVATE));
 
             if (lineaAleer != null)
-                fout.write(lineaAleer + "" + username + "¬" + score + "#");
+                fout.write(lineaAleer + "" + username + "¬" + score +"¬" +username+"image#");
             else
-                fout.write(  username + "¬" + score + "#");
+                fout.write(  username + "¬" + score + "¬" +username+"image#");
             fout.close();
 
             Log.i("Ficheros", "Fichero creado!");
         } catch (Exception ex) {
             Log.e("Ficheros", "Error al escribir fichero a memoria interna");
         }
-
-
 
 
         context.startActivity(scoreGame);
@@ -664,7 +662,7 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
             BufferedReader fin =
                     new BufferedReader(
                             new InputStreamReader(
-                                    context.openFileInput("nueva_puntuacion2.txt")));
+                                    context.openFileInput("nueva_puntuacioness2.txt")));
             lineaAleer = fin.readLine();
         } catch (IOException e) {
             e.printStackTrace();
@@ -673,19 +671,18 @@ public class SpaceInvadersView extends SurfaceView implements Runnable {
 
             OutputStreamWriter fout =
                     new OutputStreamWriter(
-                            context.openFileOutput("nueva_puntuacion2.txt", Context.MODE_PRIVATE));
+                            context.openFileOutput("nueva_puntuacioness2.txt", Context.MODE_PRIVATE));
 
             if (lineaAleer != null)
-                fout.write(lineaAleer + "" + username + "¬" + score + "#");
+                fout.write(lineaAleer + "" + username + "¬" + score +  "¬" +username+"image#");
             else
-                fout.write(  username + "¬" + score + "#");
+                fout.write(  username + "¬" + score + "¬" +username+"image#");
             fout.close();
 
             Log.i("Ficheros", "Fichero creado!");
         } catch (Exception ex) {
             Log.e("Ficheros", "Error al escribir fichero a memoria interna");
         }
-
 
         context.startActivity(scoreGame);
     }
